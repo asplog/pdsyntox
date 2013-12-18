@@ -197,14 +197,14 @@ AUTOMAKE = automake-1.14
 AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Dexit=putc
+CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
 CXX = g++
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -Dexit=putc
+CXXFLAGS = -g -O2
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"syntox\" -DPACKAGE_TARNAME=\"syntox\" -DPACKAGE_VERSION=\"2.6.1\" -DPACKAGE_STRING=\"syntox\ 2.6.1\" -DPACKAGE_BUGREPORT=\"lionel.clement@labri.fr\" -DPACKAGE_URL=\"\" -DPACKAGE=\"syntox\" -DVERSION=\"2.6.1\" -DSTDC_HEADERS=1
+DEFS = -DPACKAGE_NAME=\"syntox\" -DPACKAGE_TARNAME=\"syntox\" -DPACKAGE_VERSION=\"2.6.1\" -DPACKAGE_STRING=\"syntox\ 2.6.1\" -DPACKAGE_BUGREPORT=\"lionel.clement@labri.fr\" -DPACKAGE_URL=\"\" -DPACKAGE=\"syntox\" -DVERSION=\"2.6.1\" -DYYTEXT_POINTER=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDARG_H=1
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
@@ -219,7 +219,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LEX = flex
-LEXLIB = 
+LEXLIB = -lfl
 LEX_OUTPUT_ROOT = lex.yy
 LIBOBJS = 
 LIBS =  
@@ -240,8 +240,8 @@ SHELL = /bin/bash
 STRIP = 
 VERSION = 2.6.1
 XML2_CONFIG = /usr/local/bin/xml2-config
-XML_CPPFLAGS = 
-XML_LIBS = 
+XML_CPPFLAGS = -I/usr/local/include/libxml2
+XML_LIBS = -L/usr/local/lib -lxml2 -lz -lm -ldl
 YACC = bison -y
 YFLAGS = 
 abs_builddir = /home/superman/Documents/kt/workspace/psv2/tmp/syntox-2.6.1

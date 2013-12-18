@@ -33,7 +33,7 @@ typedef struct
 args_t;
 void dump(pdsyntox_t*self,const char*message)
 {
-	post(message);
+	error(message);
 	outlet_bang(self->out[3]);
 }
 void*invoke(void*args)
