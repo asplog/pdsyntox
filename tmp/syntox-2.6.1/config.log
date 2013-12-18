@@ -178,11 +178,11 @@ configure:4261: checking lex output file root
 configure:4275: result: lex.yy
 configure:4280: checking lex library
 configure:4294: gcc -o conftest -g -O2   conftest.c   >&5
-/tmp/ccEH8tQc.o: In function `input':
+/tmp/cco315wm.o: In function `input':
 /home/superman/Documents/kt/workspace/psv2/tmp/syntox-2.6.1/lex.yy.c:1183: undefined reference to `yywrap'
-/tmp/ccEH8tQc.o: In function `yylex':
+/tmp/cco315wm.o: In function `yylex':
 /home/superman/Documents/kt/workspace/psv2/tmp/syntox-2.6.1/lex.yy.c:882: undefined reference to `yywrap'
-/tmp/ccEH8tQc.o: In function `main':
+/tmp/cco315wm.o: In function `main':
 /home/superman/Documents/kt/workspace/psv2/tmp/syntox-2.6.1/conftest.l:18: undefined reference to `yywrap'
 collect2: ld returned 1 exit status
 configure:4294: $? = 1
