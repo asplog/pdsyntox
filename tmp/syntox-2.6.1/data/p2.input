@@ -1,0 +1,7 @@
+@input  «
+#file "input"
+#line 1
+Axiom	[PRED:commander, 
+	diathese:active, 
+	subj:[PRED:pro, person:one, number:sg], 
+	obj:[PRED:article, number:sg, def:yes]]»

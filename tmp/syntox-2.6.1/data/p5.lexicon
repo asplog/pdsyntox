@@ -1,0 +1,86 @@
+@lexicon «
+#line 1
+#file "p5.lexicon"
+
+IDENTITY constantNoun [number:sg, person:three];
+
+je	cln [PRED:_pro_, number:sg, person:one];
+tu	cln [PRED:_pro_, number:sg, person:two];
+il	cln [PRED:_pro_, number:sg, person:three, gender:ms];
+elle	cln [PRED:_pro_, number:sg, person:three, gender:fm];
+nous	cln [PRED:_pro_, number:pl, person:one];
+vous	cln [PRED:_pro_, number:pl, person:two];
+ils	cln [PRED:_pro_, number:pl, person:three, gender:ms];
+elles	cln [PRED:_pro_, number:pl, person:three, gender:fm];
+
+le	cla [PRED:_pro_, gender:ms, number:sg, person:three];
+la	cla [PRED:_pro_, gender:fm, number:sg, person:three];
+les	cla [PRED:_pro_, number:pl, person:three];
+
+me	cld [PRED:_pro_, number:sg, person:one];
+te	cld [PRED:_pro_, number:sg, person:two];
+lui	cld [PRED:_pro_, number:sg, person:three];
+nous	cld [PRED:_pro_, number:pl, person:one];
+vous	cld [PRED:_pro_, number:pl, person:two];
+leur	cld [PRED:_pro__, number:pl, person:three];
+
+le	det [number:sg, gender:ms, def:yes, dem:no, poss:no];
+la	det [number:sg, gender:fm, def:yes, dem:no, poss:no];
+les	det [number:pl, def:yes, dem:no, poss:no];
+
+un	det [number:sg, gender:ms, def:no, dem:no, poss:no];
+une	det [number:sg, gender:fm, def:no, dem:no, poss:no];
+des	det [number:pl, def:no, dem:no, poss:no];
+
+mon	det [number:sg, gender:ms, def:yes, poss:yes, dem:no, persPoss:one, numberPoss:sg];
+ma	det [number:sg, gender:fm, def:yes, poss:yes, dem:no, persPoss:one, numberPoss:sg];
+mes	det [number:pl, def:yes, poss:yes, dem:no, persPoss:one, numberPoss:sg];
+ton	det [number:sg, gender:ms, def:yes, poss:yes, dem:no, persPoss:two, numberPoss:sg];
+ta	det [number:sg, gender:fm, def:yes, poss:yes, dem:no, persPoss:two, numberPoss:sg];
+tes	det [number:pl, def:yes, poss:yes, dem:no, persPoss:two, numberPoss:sg];
+son	det [number:sg, gender:ms, def:yes, poss:yes, dem:no, persPoss:three, numberPoss:sg];
+sa	det [number:sg, gender:fm, def:yes, poss:yes, dem:no, persPoss:three, numberPoss:sg];
+ses	det [number:pl, def:yes, poss:yes, dem:no, persPoss:three, numberPoss:sg];
+notre	det [number:sg, def:yes, poss:yes, dem:no, persPoss:one, numberPoss:pl];
+nos	det [number:pl, def:yes, poss:yes, dem:no, persPoss:one, numberPoss:pl];
+votre	det [number:sg, def:yes, poss:yes, dem:no, persPoss:two, numberPoss:pl];
+vos	det [number:pl, def:yes, poss:yes, dem:no, persPoss:two, numberPoss:pl];
+leur	det [number:sg, def:yes, poss:yes, dem:no, persPoss:three, numberPoss:pl];
+leurs	det [number:pl, def:yes, poss:yes, dem:no, persPoss:three, numberPoss:pl];
+
+ce	det [number:sg, gender:ms, def:yes, poss:no, dem:yes];
+ces	det [number:pl, def:yes, poss:no, dem:yes];
+cette	det [number:sg, gender:fm, def:yes, poss:no, dem:yes];
+
+article  nc [PRED:article, number:sg, gender:ms];
+articles  nc [PRED:article, number:pl, gender:ms];
+
+courrier  nc [PRED:courrier, number:sg, gender:ms];
+courriers  nc [PRED:courrier, number:pl, gender:ms];
+
+livraison  nc [PRED:livraison, number:sg, gender:fm];
+livraisons  nc [PRED:livraison, number:pl, gender:fm];
+
+compte  nc [PRED:compte, number:sg, gender:ms];
+comptes  nc [PRED:compte, number:pl, gender:ms];
+
+ne	clneg;
+pas	advneg;
+
+que	csu[form:que];
+si	csu[form:si];
+
+toujours	adv[PRED:pas_encore]
+		|adv[PRED:toujours];
+
+de prep[pcas:de];
+à prep[pcas:à];
+pour prep[pcas:pour];
+sur prep[pcas:sur];
+avant prep[pcas:avant];
+après prep[pcas:après];
+contre prep[pcas:contre];
+
+//suis	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:one, number:sg]];
+"#verb#" v[PRED:xxx, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+»

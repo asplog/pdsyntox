@@ -1,0 +1,88 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 6';
+$subtitle='Ranking modifiers.<BR>
+(With arbitrary data in this sample).';
+
+$in='NP [PRED:grenouille, mod:<[PRED:petit, rank:b], [PRED:méchant, rank:a]>]';
+
+$gr='
+
+
+NP → det N
+{
+	order $2 $1 ;
+	↓2 := ↑;
+	↓1 := ↑ ∪ ⇓2;
+	⇑ := ↑ ∪ ⇓1 ∪ ⇓2;
+};
+
+N2 → nc
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N → N2
+{
+	[mod:Mod, X];
+	Sorted := sort Mod with rank;
+	↓ := [X, mod:Sorted];
+	⇑ := X ∪ ⇓;
+};
+
+N → N2
+{
+	[mod:NIL, X];
+	↓ := X;
+	⇑ := ⇓;
+};
+
+N2 → A N2
+{
+	[mod:<Head::Tail>, X];
+	[number:N, gender:G] ⊂  ↑;
+	↓1 := Head ∪ [number:N, gender:G, pre:yes, post:no];
+	[number:N1, gender:G1] ⊂  ⇓1;
+	test [pre:yes, post:no] ∪ ⇓1;
+	↓2 := [X, mod:Tail] ∪ [number:N1, gender:G1];
+	⇑ := X ∪ ⇓2 ∪ [number:N1, gender:G1];
+};
+
+A → adj
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+';
+
+$lx='
+le	det [number:sg, gender:ms, def:yes];
+la	det [number:sg, gender:fm, def:yes];
+les	det [number:pl, def:yes];
+
+un	det [number:sg, gender:ms, def:no];
+une	det [number:sg, gender:fm, def:no];
+des	det [number:pl, def:no];
+
+grenouille	nc [PRED:grenouille, gender:fm, number:sg];
+grenouilles	nc [PRED:grenouille, gender:fm, number:pl];
+
+petit	adj [PRED:petit, number:sg, gender:ms, pre:yes];
+petits	adj [PRED:petit, number:pl, gender:ms, pre:yes];
+petite	adj [PRED:petit, number:sg, gender:fm, pre:yes];
+petites	adj [PRED:petit, number:pl, gender:fm, pre:yes];
+
+méchant	adj [PRED:méchant, number:sg, gender:ms, pre:yes];
+méchants	adj [PRED:méchant, number:pl, gender:ms, pre:yes];
+méchante	adj [PRED:méchant, number:sg, gender:fm, pre:yes];
+méchantes	adj [PRED:méchant, number:pl, gender:fm, pre:yes];
+
+';
+
+?>

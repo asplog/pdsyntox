@@ -1,0 +1,105 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 2';
+$subtitle='Local Agreement.<BR>
+Synthesized functions (⇑, ⇓i) are used to agree number and gender.';
+
+$in='
+S [PRED:manger,
+    subj:[PRED:grenouille],
+    obj:[PRED:insecte]
+]
+';
+
+$gr='
+S → NP VP
+{
+    [subj:Sinh];
+    ↓1 := Sinh;
+    Ssynt := ⇓1;
+    ↓2 := ↑ ∪ [subj:Ssynt];
+};
+
+NP → pn
+{
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+NP → det N
+{
+    ↓1 := ↑;
+    [gender:G, number:N] ⊂ ⇓1;
+    ↓2 := ↑ ∪ [gender:G, number:N];
+    ⇑ := ⇓2 ∪ [person:three];
+};
+
+N → nc
+{
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+VP → v NP
+{
+    [obj:X];
+    ↓1 := ↑;
+    ↓2 := X;
+};
+
+VP → v
+{
+    [obj:NIL];
+    ↓1 := ↑;
+};
+';
+
+$lx='
+/* ***********
+ * Lexicon 
+ ************ */
+
+mange	v [PRED:manger, subj:[number:sg]];
+"mang<span style=&apos;color:green;font-weight:bold;&apos;>ent</span>"	v [PRED:manger, subj:[number:pl]];
+
+le	det [number:sg, gender:ms, def:yes];
+la	det [number:sg, gender:fm, def:yes];
+"le<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes];
+
+un	det [number:sg, gender:ms, def:no, dem:no, poss:no];
+une	det [number:sg, gender:fm, def:no, dem:no, poss:no];
+"de<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:no, dem:no, poss:no];
+
+mon	det [number:sg, gender:ms, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:sg];
+ma	det [number:sg, gender:fm, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:sg];
+"me<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:sg];
+ton	det [number:sg, gender:ms, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:sg];
+ta	det [number:sg, gender:fm, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:sg];
+"te<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:sg];
+son	det [number:sg, gender:ms, def:yes, dem:no, poss:yes, persPoss:three, numberPoss:sg];
+sa	det [number:sg, gender:fm, def:yes, dem:no, poss:yes, persPoss:three, numberPoss:sg];
+"s<span style=&apos;color:green;font-weight:bold;&apos;>es</span>"	det [number:pl, def:yes, dem:no, poss:yes, persPoss:three, numberPoss:sg];
+
+notre	det [number:sg, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:pl];
+"no<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:pl];
+votre	det [number:sg, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:pl];
+"vo<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:pl];
+leur	det [number:sg, def:yes, dem:no, poss:yes, persPoss:three, numberPoss:pl];
+"leur<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes, dem:no, poss:yes, persPoss:three, numberPoss:pl];
+
+ce	det [number:sg, gender:ms, def:yes, dem:yes, poss:no];
+"ce<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	det [number:pl, def:yes, dem:yes, poss:no];
+cette	det [number:sg, gender:fm, def:yes, dem:yes, poss:no];
+
+grenouille	nc [PRED:grenouille, gender:fm, number:sg];
+"grenouille<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	nc [PRED:grenouille, gender:fm, number:pl];
+
+insecte	nc [PRED:insecte, number:sg, gender:ms];
+"insecte<span style=&apos;color:green;font-weight:bold;&apos;>s</span>"	nc [PRED:insecte, number:pl, gender:ms];
+';
+
+?>

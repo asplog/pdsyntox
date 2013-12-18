@@ -1,0 +1,22 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='Formal grammar 1';
+$subtitle='a^n b^n';
+
+$in='S';
+
+$gr='
+S → a S b;
+S → ;
+';
+
+$lx='
+a a;
+b b;
+';
+
+?>

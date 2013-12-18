@@ -1,0 +1,24 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Test 7';
+$subtitle='Test arithmetic expressions';
+
+$in='
+S
+';
+
+$gr='
+S → {
+	X := 10 - 2;
+	Y := X + 1;
+	Z := Y * 2;
+	K := Y / Z;
+	L := (13 + K) % 4;
+	trace "<ul><li>X: "; trace X; trace "</li><li>Y: "; trace Y; trace "</li><li>Z: "; trace Z; trace "</li><li>K: "; trace K; trace "</li><li>L: "; trace L; trace "</li></ul>";
+};
+';
+
+?>

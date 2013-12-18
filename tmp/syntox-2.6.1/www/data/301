@@ -1,0 +1,93 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Music 1';
+$subtitle='Chord';
+
+$in='
+S [sub1:[type:0],sub2:[type:1],sub3:[type:2],sub4:[type:3],sub5:[type:4],sub6:[type:5]]
+';
+
+$gr='
+S → cade cade cade cade cade cade
+{
+  [sub1:A];
+  [sub2:B];
+  [sub3:C];
+  [sub4:X];
+  [sub5:Y];
+  [sub6:Z];
+  ↓1 := A;
+  ↓2 := B;
+  ↓3 := C;
+  ↓4 := X;
+  ↓5 := Y;
+  ↓6 := Z;
+};
+
+cade → chord chord
+{
+  [type:0];
+  ↓1 := [root:7, tension:7];
+  ↓2 := [root:NIL, tension:7];
+};
+
+cade → chord chord
+{
+  [type:1];
+  ↓1 := [root:2, tension:7];
+  ↓2 := [root:7, tension:NIL];
+};
+
+cade → chord chord chord chord
+{
+  [type:2];
+  ↓1 := [root:2, tension:7];
+  ↓2 := [root:7, tension:7];
+  ↓3 := [root:NIL, tension:7];
+  ↓4 := [root:NIL, tension:7];
+};
+
+cade → chord chord
+{
+  [type:3];
+  ↓1 := [root:7, tension:9];
+  ↓2 := [root:NIL, tension:6];
+};
+
+cade → chord chord
+{
+  [type:4];
+  ↓1 := [root:2, tension:5];
+  ↓2 := [root:7, tension:9];
+};
+
+cade → chord chord chord chord
+{
+  [type:5];
+  ↓1 := [root:2, tension:5];
+  ↓2 := [root:7, tension:9];
+  ↓3 := [root:NIL, tension:6];
+  ↓4 := [root:NIL, tension:6];
+};
+';
+
+$lx='
+/* ***********
+ * Lexicon 
+ ************ */
+//i chord [root:NIL, tension:NIL];
+// iM7 chord [root:NIL, tension:7];
+// im6 chord [root:NIL, tension:6];
+// ii chord [root:2, tension:NIL];
+// iim7 chord [root:2, tension:7];
+// iim75b chord [root:2, tension:5];
+// v chord [root:7, tension:NIL];
+// v79b chord [root:7, tension:9];
+// v7 chord [root:7, tension:7];
+x(root, tension) chord ;
+';
+
+?>

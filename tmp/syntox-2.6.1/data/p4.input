@@ -1,0 +1,12 @@
+@input  «
+#file "input"
+#line 1
+
+S [	PRED:commander, 
+	diathese:active,
+	tense:passé_composé, 
+	subj:[FORM:"Jean-Michel"], 
+	à_obj:[PRED:pro, person:two, number:pl], 
+	obj:[PRED:article, number:sg, def:no]
+]
+»

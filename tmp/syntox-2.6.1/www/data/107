@@ -1,0 +1,189 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 7';
+$subtitle='Lexical equations';
+
+$in=array(array('N0 demande P', '
+S [PRED:demander,
+            subj:[PRED:plombier, number:sg, def:yes],
+ 	   scomp:[PRED:prendre,
+		  obj:[PRED:garantie, number:sg, def:no],
+	          subj:[PRED:client, number:sg, def:yes]]]'),
+	  array('N0 croit P', '
+S [PRED:croire,
+            subj:[PRED:plombier, number:sg, def:yes],
+ 	   scomp:[PRED:prendre,
+		  obj:[PRED:garantie, number:sg, def:no],
+	          subj:[PRED:client, number:sg, def:yes]]]'),
+	  array('N0 propose P', '
+S [PRED:proposer,
+            subj:[PRED:plombier, number:sg, def:yes],
+ 	   scomp:[PRED:prendre,
+		  obj:[PRED:garantie, number:sg, def:no],
+	          subj:[PRED:client, number:sg, def:yes]]]'));
+
+
+$gr='
+S → NP VP
+{
+    [modP:NIL, subj:X];
+    ↓1 := X;
+    Y := ⇓1;
+    ↓2 := ↑ ∪ [subj:Y];
+    ⇑ := ↑ ∪ ⇓2;
+};
+
+NP → det N
+{
+    order $2 $1 ;
+    ↓2 := ↑;
+    ↓1 := ↑ ∪ ⇓2;
+    ⇑ := ↑ ∪ ⇓1 ∪ ⇓2;
+};
+
+NP → pn
+{
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+N → nc
+{
+    [mod:NIL];
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+VP → VP NP
+{ 
+	[obj:X, Y];
+        ↓1 := Y;
+        [obj:XSynt] ⊂ ⇓1;
+        test XSynt=NIL;
+	↓2 := X;
+    ⇑ := ⇓1;
+}
+;
+
+VP → VP PP
+{ 
+	[obl:X, Y];
+	[pos:P, obj:O, obl2:O2] ⊂ ↑;
+	test (P = last) ⇔ ((O = NIL) ∧ (O2 = NIL));
+        ↓1 := Y;
+	[obl:XSynt] ⊂ ⇓1;
+	↓2 := X ∪ XSynt;
+    ⇑ := ⇓1;
+}
+;
+
+VP → VP PP
+{ 
+ 	[obl2:X, Y];
+        ↓1 := Y;
+	[obl2:XSynt] ⊂ ⇓1;
+	↓2 := X ∪ XSynt;
+    ⇑ := ⇓1;
+}
+;
+
+VP → VP OC
+{ 
+	[scomp:X, Y];
+        ↓1 := Y;
+	[scomp:XSynt] ⊂ ⇓1;
+	↓2 := X ∪ XSynt;
+    ⇑ := ⇓1;
+}
+;
+
+VP → VP OC
+{ 
+	[vcomp:X, Y];
+        ↓1 := Y;
+	[vcomp:XSynt] ⊂ ⇓1;
+	↓2 := X ∪ XSynt ∪ [subj:[PRED:none], mode:infinitive];
+    ⇑ := ⇓1;
+}
+;
+
+VP → V
+{
+    [obj:NIL, obl:NIL, obl2:NIL, scomp:NIL, vcomp:NIL];
+    ↓1 := ↑;
+    [obj:XSynt] ⊂ ⇓1;
+    test XSynt=NIL;
+    ⇑ := ⇓1;
+}
+;
+
+V → v
+{
+	↓ := ↑;
+	⇑ := ⇓;
+};
+
+OC → comp S
+{
+    ↓1 := ↑;
+    ↓2 := ↑;
+    ⇑ := ⇓1 ∪ ⇓2;
+};
+
+';
+
+$lx='
+demande	v [PRED:demander, 
+	   vForm:tense, 
+	   tense:present, 
+	   mode:indicative|subjonctive, 
+	   subj:[person:one|three, number:sg],
+	   scomp:[mode:M, compForm:C],
+	   vcomp:[compForm:de]]{
+test (C = si) ⇒ (M = indicative);
+test (C = que) ⇒ (M = subjonctive);
+};
+
+propose	v [PRED:proposer, 
+	   vForm:tense, 
+	   tense:present, 
+	   mode:indicative|subjonctive, 
+	   subj:[person:one|three, number:sg],
+	   scomp:[mode:subjonctive, compForm:que],
+	   vcomp:[compForm:de]];
+
+croit	v [PRED:croire, 
+	   vForm:tense, 
+	   tense:present, 
+	   mode:indicative|subjonctive, 
+	   subj:[person:one|three, number:sg],
+	   scomp:[mode:indicative, compForm:que],
+	   vcomp:[compForm:de]];
+
+"&lt;b&gt;prend&lt;/b&gt;"	v [PRED:prendre, vForm:tense, tense:present, mode:indicative, subj:[person:three, number:sg]];
+"&lt;b&gt;prenne&lt;/b&gt;"	v [PRED:prendre, vForm:tense, tense:present, mode:subjonctive, subj:[person:one|three, number:sg]];
+
+le	det [number:sg, gender:ms, def:yes, dem:no, poss:no];
+la	det [number:sg, gender:fm, def:yes, dem:no, poss:no];
+les	det [number:pl, def:yes, dem:no, poss:no];
+un	det [number:sg, gender:ms, def:no];
+une	det [number:sg, gender:fm, def:no];
+des	det [number:pl, def:no];
+
+plombier	nc [PRED:plombier, number:sg, gender:ms];
+
+client	nc [PRED:client, number:sg, gender:ms];
+
+garantie	nc [PRED:garantie, gender:fm, number:sg];
+
+que comp[compForm:que];
+
+si comp[compForm:si];
+
+';
+
+?>

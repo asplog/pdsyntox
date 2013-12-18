@@ -1,0 +1,139 @@
+<?php
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 4';
+$subtitle='Idioms<BR>
+&quot;se tamponner le coquillard&quot; meens literaly &quot;to stamp the shell&quot; (the shell=buttocks in slang language)<BR>
+Actually the expression meens &quot;couldn&apos;t care less&quot;.';
+
+$in='S [PRED:tamponner_le_coquillard, obl:[PRED:pro, pcase:de], subj:[PRED:président, number:sg, gender:ms, def:yes]]';
+
+$gr='
+S → NP VP
+{
+  [subj:X];
+  ↓1 := X;
+  Y := ⇓1;
+  ↓2 := ↑ ∪ [subj:Y];
+};
+
+NP → det N
+{
+  ↓1 := ↑;
+  [number:Y, gender:Z] ⊂ ⇓1;
+  ↓2 := ↑ ∪ [number:Y, gender:Z];
+  ⇑ := ↑ ∪ [number:Y, gender:Z, det:yes, person:three];
+};
+
+N → nc
+{
+  ↓1 := ↑;
+};
+
+VP → V PP
+{
+  [mod:NIL, obl:OBL];
+  ↓1 := ↑;
+  ↓2 := OBL;
+};
+
+VP → V NP
+{
+  ↓1 := ↑;
+  [obj:OBJ] ⊂ ⇓1;
+  ↓2 := OBJ;
+};
+
+V → proSe V2
+{
+  ↓1 := ↑;
+  ↓2 := ↑ ∪ ⇓1;
+  ⇑ := ⇓2;
+};
+
+V → V2
+{
+  ↓1 := ↑;
+  ⇑ := ⇓1 ∪ [pron:no]; 
+};
+
+V2 → v
+{
+  [obl:NIL];
+  ↓1 := ↑;
+  ⇑ := ⇓1; 
+};
+
+V2 → cld v
+{
+  [obl:OBL];
+  ↓1 := OBL;
+  ↓2 := ↑;
+  ⇑ := ⇓2; 
+};
+
+PP → prep NP
+{
+  ↓1 := ↑;
+  ↓2 := ↑;
+};
+';
+
+$lx='
+
+le	det [number:sg, gender:ms, def:yes];
+la	det [number:sg, gender:fm, def:yes];
+les	det [number:pl, def:yes];
+un	det [number:sg, gender:ms, def:no];
+une	det [number:sg, gender:fm, def:no];
+des	det [number:pl, def:no];
+
+coquillard	nc [PRED:coquillard, number:sg, gender:ms];
+coquillards	nc [PRED:coquillard, number:pls, gender:ms];
+
+président	nc [PRED:président, number:sg, gender:ms];
+présidente	nc [PRED:président, number:sg, gender:fm];
+présidents	nc [PRED:président, number:pl, gender:ms];
+présidentes	nc [PRED:président, number:pl, gender:fm];
+
+réunion	nc [PRED:réunion, number:sg, gender:fm];
+réunions	nc [PRED:réunion, number:pl, gender:fm];
+
+ronfle	v [PRED:ronfler, subj:[number:sg]];
+ronflent	v [PRED:ronfler, subj:[number:pl]];
+
+// Verbe pronominal
+fiche	v [PRED:ficher, pron:yes, subj:[number:sg], obl:[pcase:de]];
+fichent	v [PRED:ficher, pron:yes, subj:[number:pl], obl:[pcase:de]];
+
+// Verbe pronominal figé
+tamponne	v [PRED:tamponner_le_coquillard, pron:yes, subj:[number:sg], obj:[PRED:coquillard, def:yes, number:sg]];
+tamponnent	v [PRED:tamponner_le_coquillard, pron:yes, subj:[number:pl], obj:[PRED:coquillard, def:yes, number:sg]];
+
+en cld [PRED:pro, pcase:de];
+
+de prep [pcase:de];
+
+se proSe [pron:yes];
+';
+
+$pe='
+(^| )([tsjlmcnd]|qu)e ([aàeiuoyéèê])⇒$1$2\\\'$3
+(^| )la ([aeiuoyéèê])⇒$1l\\\'$2
+(^| )([mts])a ([aeiuoyéèê])⇒$1$2on $3
+(^| )de le($| )⇒$1du$2
+(^| )de les($| )⇒$1des$2
+[.][.][.]⇒&dots;
+ *([,.;]) *⇒$1
+([?!.,;:]) *(.)⇒$1 $2
+(^|[.?!] )(.)⇒$1\\\u$2
+( *[(])⇒ (
+([)] *)⇒) 
+([0-9])[.] ([0-9])⇒$1.$2
+[.] *[.]⇒.
+&dots;⇒...
+';
+
+?>

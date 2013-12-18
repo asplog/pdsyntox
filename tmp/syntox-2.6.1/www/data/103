@@ -1,0 +1,119 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 3';
+$subtitle='Ordered set of Modifiers.<BR>
+An empty set unifies with <i>NIL</i>. Alternatively, a set unifies with <i><X::Y></i> where <i>X</i> is the first element and <i>Y</i> the complement.';
+
+$in='NP [PRED:grenouille, mod:<[PRED:gros], [PRED:mouillé]>]';
+
+$gr='
+
+NP → det N
+{
+	order $2 $1 ;
+	↓2 := ↑;
+	↓1 := ↑ ∪ ⇓2;
+	⇑ := ↑ ∪ ⇓1 ∪ ⇓2;
+};
+
+N → nc
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N → A N
+{
+	[mod:<Elt::Rest>, X];
+
+
+	[number:N, gender:G] ⊂ ↑;
+	↓1 := Elt ∪ [number:N, gender:G, pre:yes, post:no];
+
+	[number:N1, gender:G1] ⊂ ⇓1;
+	test [pre:yes, post:no] ∪ ⇓1;
+
+	↓2 := [X, mod:Rest] ∪ [number:N1, gender:G1];
+
+	⇑ := X ∪ ⇓2 ∪ [number:N1, gender:G1];
+};
+
+N → N A
+{
+	[mod:<First::Rest>, X];
+	
+	order $2 $1;
+
+	[number:N, gender:G] ⊂ ↑;
+
+	↓2 := First ∪ [number:N, gender:G, pre:no, post:yes];
+	
+	[number:N2, gender:G2] ⊂ ⇓2;
+	test [pre:no, post:yes] ∪ ⇓1;
+
+	↓1 := [X, mod:Rest] ∪ [number:N2, gender:G2];
+
+	⇑ := X ∪ ⇓1 ∪ [number:N2, gender:G2];
+};
+
+A → adj
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+A → advA A
+{
+	[mod:<First::Rest>, X];
+	↓1 := First;
+	↓2 := [X, mod:Rest];
+	⇑ := X ∪ ⇓2;
+};
+';
+
+$lx=	'
+/* ***********
+ * Lexicon ↓
+ ************ */
+
+mange	v [PRED:manger, subj:[number:sg]];
+"mange<b>nt</b>"	v [PRED:manger, subj:[number:pl]];
+
+le	det [number:sg, gender:ms, def:yes];
+la	det [number:sg, gender:fm, def:yes];
+"le<b>s</b>"	det [number:pl, def:yes];
+
+un	det [number:sg, gender:ms, def:no];
+une	det [number:sg, gender:fm, def:no];
+"de<b>s</b>"	det [number:pl, def:no];
+
+grenouille	nc [PRED:grenouille, gender:fm, number:sg];
+"grenouille<b>s</b>"	nc [PRED:grenouille, gender:fm, number:pl];
+
+insecte	nc [PRED:insecte, number:sg, gender:ms];
+"insecte<b>s</b>"	nc [PRED:insecte, number:pl, gender:ms];
+
+gros	adj [PRED:gros, gender:ms, pre:yes];
+grosse	adj [PRED:gros, number:sg, gender:fm, pre:yes];
+"grosse<b>s</b>"	adj [PRED:gros, number:pl, gender:fm, pre:yes];
+
+petit	adj [PRED:petit, number:sg, gender:ms, pre:yes];
+"petit<b>s</b>"	adj [PRED:petit, number:pl, gender:ms, pre:yes];
+petite	adj [PRED:petit, number:sg, gender:fm, pre:yes];
+"petite<b>s</b>"	adj [PRED:petit, number:pl, gender:fm, pre:yes];
+
+mouillé	adj [PRED:mouillé, number:sg, gender:ms, post:yes];
+mouillée	adj [PRED:mouillé, number:sg, gender:fm, post:yes];
+"mouillé<b>s</b>"	adj [PRED:mouillé, number:pl, gender:ms, post:yes];
+"mouillée<b>s</b>"	adj [PRED:mouillé, number:pl, gender:fm, post:yes];
+
+très	advA [PRED:très];
+';
+
+?>

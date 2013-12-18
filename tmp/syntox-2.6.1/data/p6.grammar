@@ -1,0 +1,15 @@
+@grammar «
+#line 1
+#file "p6.grammar"
+
+S → (a) (b) (c) (d) (e) (f) x
+{
+if ($1) L1 := <a>; else L1 := <b>;
+if ($2) L2 := <a::L1>; else L2 := <b::L1>;
+if ($3) L3 := <a::L2>; else L3 := <b::L2>;
+if ($4) L4 := <a::L3>; else L4 := <b::L3>;
+if ($5) L5 := <a::L4>; else L5 := <b::L4>;
+if ($6) L6 := <a::L5>; else L6 := <b::L5>;
+↓7 := [l:L6];
+};
+»

@@ -1,0 +1,32 @@
+##############################
+1.4.0
+	Creation
+
+##############################
+1.4.1
+	Earley parsing optimisation for closing and reducing rules
+	[] notation for features
+	
+##############################
+1.4.2
+	Makefile fixed
+	
+##############################
+1.4.3
+	Latin1 -> UTF8
+
+	Earley parsing Optimisation:
+ 	A -> B . ak C
+	gives
+	A -> B ak . C iff
+	| C empty => ak+1 in Nexts(A)
+	| C not empty => ak+1 in Firsts(C)
+
+	
+##############################
+1.4.4
+	! operator in constants ([attr= !3]
+	| operator in constants ([attr = (a|b)])
+	& operator (both variable and specification on constants) ([attr=X & !(a|b)])
+	$ operator in variables (A[attr1=X1; attr2=X2] -> B[attr=X$]*)
+

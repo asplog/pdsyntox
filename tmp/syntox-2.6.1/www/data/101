@@ -1,0 +1,75 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='French sample 1';
+$subtitle='A simple sentence without agreement.<BR>
+It does not work without number and gender !<BR>';
+
+
+$in='
+S [PRED:manger,
+    subj:[PRED:grenouille, number:sg, gender:fm, def:yes],
+    obj:[PRED:insecte, number:pl, gender:ms, def:no]
+]
+';
+
+$gr='
+S → NP VP
+{
+  [subj:X];
+  ↓1 := X;
+  ↓2 := ↑;
+};
+
+NP → pn
+{
+  ↓1 := ↑;
+};
+
+NP → det nc
+{
+  ↓1 := ↑;
+  ↓2 := ↑;
+};
+
+VP → v NP
+{
+  [obj:X];
+  ↓1 := ↑;
+  ↓2 := X;
+};
+
+VP → v
+{
+  [obj:NIL];
+  ↓1 := ↑;
+};
+
+';
+
+$lx='
+/* ***********
+ * Lexicon 
+ ************ */
+
+"mang<span style=&apos;color:red&apos;>e</span>"	v [PRED:manger, subj:[number:sg]];
+"mang<span style=&apos;color:red&apos;>ent</span>"	v [PRED:manger, subj:[number:pl]];
+
+le	det [number:sg, gender:ms, def:yes];
+la	det [number:sg, gender:fm, def:yes];
+les	det [number:pl, def:yes];
+
+un	det [number:sg, gender:ms, def:no];
+une	det [number:sg, gender:fm, def:no];
+des	det [number:pl, def:no];
+
+"grenouill<span style=&apos;color:red&apos;>e</span>"	nc [PRED:grenouille, gender:fm, number:sg];
+"grenouille<span style=&apos;color:red&apos;>s</span>"	nc [PRED:grenouille, gender:fm, number:pl];
+
+"insect<span style=&apos;color:red&apos;>e</span>"	nc [PRED:insecte, number:sg, gender:ms];
+"insecte<span style=&apos;color:red&apos;>s</span>"	nc [PRED:insecte, number:pl, gender:ms];
+';
+
+?>

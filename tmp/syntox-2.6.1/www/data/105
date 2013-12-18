@@ -1,0 +1,146 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 5';
+$subtitle='Agreement on complement adjectives';
+
+$in=array(array('N0 trouve N1 A1', 'S [PRED:trouver, subj:[PRED:voisin], obj:[PRED:&eacute;tudiant], acomp:[PRED:idiot]]'), array('N0 semble A1', 'S [PRED:sembler, subj:[PRED:voisin], acomp:[PRED:idiot]]'));
+
+$gr='
+S → NP VP
+{
+  [subj:SUBJ];
+  ↓1 := SUBJ;
+  SUBJ1 := ⇓1;
+  ↓2 := ↑ ∪ [subj:SUBJ1, mode:indicative|subjonctive];
+  ⇑ := ⇓2;
+};
+
+NP → pn
+{
+  ↓1 := ↑;
+  ⇑ := ⇓1;
+};
+
+NP → det N
+{
+  ↓1 := ↑;
+  ↓2 := ↑;
+  test ⇓1 ∪ ⇓2;
+  ⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:three];
+};
+
+N → cn
+{
+  ↓1 := ↑;
+  ⇑ := ⇓1;
+};
+
+AP → adj
+{
+  ↓1 := ↑;
+  ⇑ := ⇓1;
+};
+
+VP → V
+{
+  [mod:NIL, obj:NIL, acomp:NIL];
+  ↓1 := ↑;
+  ⇑ := ⇓1;
+};
+
+VP → V NP AP
+{
+  [mod:NIL, obj:OBJ, acomp:ACOMP];
+  ↓1 := ↑;
+  [obj:OBJ1, acomp:ACOMP1] ⊂ ⇓1;
+  ↓2 := OBJ ∪ OBJ1;
+  ↓3 := ACOMP ∪ ACOMP1;
+  ⇑ := ⇓1;
+};
+
+VP → V AP
+{
+  [mod:NIL, obj:NIL, acomp:ACOMP];
+  ↓1 := ↑;
+  [acomp:ACOMP1] ⊂ ⇓1;
+  ↓2 := ACOMP ∪ ACOMP1;
+  ⇑ := ⇓1;
+};
+
+V → v
+{
+  ↓1 := ↑;
+  ⇑ := ⇓1;
+};
+';
+
+$lx='
+semble	v[PRED:sembler, 
+	  vForm:tense, 
+	  tense:present, 
+	  mode:indicative|subjonctive, 
+	  subj:[person:one|three, gender:G, number:sg], 
+	  acomp:[number:sg, gender:G]];
+
+semblent	v[PRED:sembler, 
+		  vForm:tense, 
+		  tense:present, 
+		  mode:indicative|subjonctive, 
+		  subj:[person:three, gender:G, number:pl], 
+		  acomp:[gender:G, number:pl]];
+
+trouve	v[PRED:trouver, 
+	  subj:[person:one|three, number:sg], 
+	  obj:[gender:G, number:N], 
+	  acomp:[gender:G, number:N]];
+
+trouvent	v[PRED:trouver, 
+	  subj:[person:three, number:pl], 
+	  obj:[gender:G, number:N], 
+	  acomp:[gender:G, number:N]];
+
+"Luc"	pn [PRED:luc, gender:ms, number:sg, person:three];
+"Marie"	pn [PRED:marie, gender:fm, number:sg, person:three];
+
+le	det [number:sg, gender:ms, def:yes, dem:no, poss:no];
+la	det [number:sg, gender:fm, def:yes, dem:no, poss:no];
+les	det [number:pl, def:yes, dem:no, poss:no];
+
+voisin	cn [PRED:voisin, gender:ms, number:sg];
+voisins	cn [PRED:voisin, gender:ms, number:pl];
+voisine	cn [PRED:voisin, gender:fm, number:sg];
+voisines	cn [PRED:voisin, gender:fm, number:pl];
+
+étudiant	cn [PRED:étudiant, gender:ms, number:sg];
+étudiants	cn [PRED:étudiant, gender:ms, number:pl];
+étudiante	cn [PRED:étudiant, gender:fm, number:sg];
+étudiantes	cn [PRED:étudiant, gender:fm, number:pl];
+
+idiot	adj [PRED:idiot, gender:ms, number:sg, post:yes];
+idiote	adj [PRED:idiot, gender:fm, number:sg, post:yes];
+idiots	adj [PRED:idiot, gender:ms, number:pl, post:yes];
+idiotes	adj [PRED:idiot, gender:fm, number:pl, post:yes];
+';
+
+$pe='
+(^| )([tsjlmcnd]|qu)e ([aàeiuoyéèê])⇒$1$2\\\'$3
+(^| )la ([aàâeéèêëiuoy])⇒$1l\\\'$2
+(^| )([mts])a ([aeiuoyéèê])⇒$1$2on $3
+(^| )de le($| )⇒$1du$2
+(^| )de les($| )⇒$1des$2
+[.][.][.]⇒&dots;
+ *([,.;]) *⇒$1
+([?!.,;:]) *(.)⇒$1 $2
+(^|[.?!] )(.)⇒$1\\\u$2
+( *[(])⇒ (
+([)] *)⇒) 
+([0-9])[.] ([0-9])⇒$1.$2
+[.] *[.]⇒.
+&dots;⇒...
+';
+
+?>

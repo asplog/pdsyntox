@@ -1,0 +1,30 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Test 1';
+$subtitle='';
+
+
+$in='
+S
+';
+
+$gr='
+S → x (A) (B) (C) (D) x;
+A → a;
+B → b;
+C → c;
+D → d;
+';
+
+$lx='
+a	a;
+b	b;
+c	c;
+d	d;
+x	x;
+';
+
+?>

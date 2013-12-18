@@ -1,0 +1,13 @@
+@lexicon «
+#line 1
+#file "p6.lexicon"
+
+a a;
+b b;
+c c;
+d d;
+e e;
+f h;
+g g;
+x(l) x;
+»

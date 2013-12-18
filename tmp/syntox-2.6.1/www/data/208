@@ -1,0 +1,67 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Test 8';
+$subtitle='';
+
+
+$in='
+S [attr1:givenValue, attr2: [attr3: value3]]
+';
+
+$gr='
+S → X;
+
+X → (A) (B|C) D|E {
+[lex:L1] ⊂ ⇓1;
+[lex:L2] ⊂ ⇓2;
+[lex:L3] ⊂ ⇓3;
+if ($1) {
+	X1 := 1;
+} else {
+	X1 := 0;
+}
+if ($2) {
+} else {
+	X2 := no_B_nore_C;
+}
+if ($2:1) {
+	X21 := 1;
+} else {
+	X21 := 0;
+}
+if ($2:2) {
+	X22 := 1;
+} else {
+	X22 := 0;
+}
+if ($3:1) {
+	X31 := 1;
+} else {
+	X31 := 0;
+}
+if ($3:2) {
+	X32 := 1;
+} else {
+	X32 := 0;
+}
+	trace "<ul><li>L1: "; trace L1; trace "</li><li>L2: "; trace L2; trace "</li><li>L3: "; trace L3; trace "</li><li>X1: "; trace X1; trace "</li><li>X2: "; trace X2; trace "</li><li>X21: "; trace X21; trace "</li><li>X22: "; trace X22; trace "</li><li>X31: "; trace X31; trace "</li><li>X32: "; trace X32; trace "</li></ul>";
+};
+
+A → a {↓1 := ↑; ⇑ := ⇓1;};
+B → b {↓1 := ↑; ⇑ := ⇓1;};
+C → c {↓1 := ↑; ⇑ := ⇓1;};
+D → d {↓1 := ↑; ⇑ := ⇓1;};
+E → e {↓1 := ↑; ⇑ := ⇓1;};';
+
+$lx='
+a	a [lex:a];
+b	b [lex:b];
+c	c [lex:c];
+d	d [lex:d];
+e	e [lex:e];
+';
+
+?>

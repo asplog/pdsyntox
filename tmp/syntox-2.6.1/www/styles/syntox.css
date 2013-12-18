@@ -1,0 +1,377 @@
+p.block 
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 3in
+}
+
+
+.logo
+{
+	position:absolute;
+	left:28px;
+	top:8px;
+	background:transparent;
+	background-repeat:no-repeat;
+	width:36px;
+	height:106px;
+}
+
+body
+{
+    font-family: verdana, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    color: #404040;
+    background:transparent;
+}
+
+.strong
+{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.large
+{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.bold
+{
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.medium
+{
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.disabled
+{
+    background-color:#F1F1F1;
+    color:#808080;
+}
+
+.italic
+{
+    font-size: 11px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.admin
+{
+    font-size: 11px;
+    font-weight: normal;
+    font-style: italic;
+    background-color:#FF4040;
+    color:#FFFF40;
+}
+
+.copyrightCenter
+{
+    font-family: verdana, sans-serif;
+    position:absolute;
+    text-align: center;
+    font-size: 8px;
+    font-weight: normal;
+    font-style: normal;
+    padding: 0;
+    margin: 0 auto;
+    display: none;
+    width: 100%;
+    top: 186px;
+    background:transparent;
+}
+
+.copyrightBorder
+{
+    font-family: verdana, sans-serif;
+    position:absolute;
+    bottom:2px; 
+    right:2px;
+    text-align: right;
+    font-size: 8px;
+    font-weight: normal;
+    font-style: normal;
+    padding: 0;
+    margin: 0;
+    display: block;
+    padding: 0;
+    background:transparent;
+}
+
+.login
+{
+    font-family: verdana, sans-serif;
+    position:absolute;
+    right:32px; 
+    top:32px; 
+    text-align: left;
+    font-size: 9px;
+    font-weight: normal;
+    font-style: normal;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+.login *
+{
+    font-size: 9px;
+}
+
+.main
+{
+    position:relative;
+    left:128px; 
+    top:164px; 
+    text-align: left;
+}
+
+.tl
+{
+	position:absolute; 
+	left:0px; 
+	top:0px; 
+	background:transparent;
+}
+
+.hidden
+{
+    visibility: hidden;
+}
+
+.popup
+{
+    position:absolute;
+    left:128px; 
+    top:64px; 
+    margin:50px 0px; padding:0px;
+    text-align:left;
+    display: none;
+}
+	
+.subpopup {
+    margin:0px auto;
+    text-align:left;
+    padding:15px;
+    border:1px solid #333;
+    background-color:#eee;
+}
+
+
+.project
+{
+    font-family: verdana, sans-serif;
+    position:relative;
+    left:0px; 
+    top:0px; 
+    text-align: left;
+    font-size: 9px;
+    font-weight: normal;
+    font-style: normal;
+    padding: 0;
+    margin: 0;
+}
+
+.project *
+{
+    font-size: 9px;
+}
+
+.projectOpen
+{
+    display: none;
+}
+
+.projectRemove
+{
+    display: none;
+}
+
+#grammarTextArea,
+#lexiconTextArea { 
+     border-left:2px solid #e3e3e3;
+     padding:4px;
+} 
+
+.textAreaWithLines{ 
+    font-family:courier;       
+    border:1px solid #f1f1f1; 
+    background-color:#f1f1f1;
+    
+} 
+
+.textAreaWithLines textarea,
+.textAreaWithLines div{ 
+    border:0px; 
+    line-height:120%; 
+    font-size:12px; 
+} 
+
+.lineObj{ 
+    color:#808080;
+    background-color:#f1f1f1;
+    border-right:2px solid #e3e3e3;
+    padding-right:4px;
+    height:510px;
+} 
+
+
+#menu {
+    list-style-type: none;
+    font-family: verdana, sans-serif;
+    font-size: 13;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 16pt;
+    background: transparent;
+    position: absolute;
+    top: 128px;
+    left: 128px;
+    width: auto;
+    cursor: default;
+    color: black;
+    float: left;
+    text-align: left;
+    display: block;
+}
+
+#menu li,
+#menu a {
+    color: black;
+    float: left;
+}
+
+#menu li:hover,
+#menu a:hover {
+    color: #D0D0D0;
+    background-color:black;
+}
+
+#menu li .disabled, 
+#menu li .disabled a {
+    color: grey;
+    background-color: transparent;
+}
+
+#menu ul.level1 li {
+    float: left;
+    width: 140px;
+    left: 0px;
+}
+
+#menu ul.level2 li {
+    position: relative;
+    float: left;
+    width: 200px;
+    top: 0px;
+    left: 0px;
+}
+
+#menu ul.level2 li a {
+    cursor: default;
+    border: none;
+}
+
+#menu ul.level2 li[available='false'] {
+    font-weight: 600;
+    display: block;
+    text-decoration: none;
+    width: 200px;
+}
+
+#menu ul.level2 li[available='false'] a:link,
+#menu ul.level2 li[available='false'] a:visited,
+#menu ul.level2 li[available='false'] a:hover {
+    font-weight: 600;
+    display: block;
+    text-decoration: none;
+    width: 200px;
+}
+
+#menu ul.level2 li a:link,
+#menu ul.level2 li a:visited
+{
+    font-weight: 600;
+    display: block;
+    text-decoration: none;
+    width: 200px;
+}
+
+#menu ul li ul li[available='false'].sousmenu {
+    background-image: none;
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+#menu ul li ul li.sousmenu {
+    background-image:url('stock_right.png');
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+#menu ul li {
+    position:relative;
+    list-style: none;
+    float:left;
+    margin: 4 0 0 0;
+    padding: 0 0 0 0;
+}
+
+#menu ul li ul {
+    position: absolute;
+    display:none;
+}
+
+#menu ul li ul li {
+    background:#D0D0D0;
+}
+
+#menu ul.level1 li.sousmenu:hover ul.level2 {
+    padding: 0;
+    border-left-style:solid;
+    border-left-width:1;
+    border-left-color:black;
+    border-right-style:solid;
+    border-right-width:1;
+    border-right-color:black;
+    border-top-style:solid;
+    border-top-width:1;
+    border-top-color:black;
+    border-bottom-style:solid;
+    border-bottom-width:1;
+    border-bottom-color:black;
+    background: #D0D0D0;
+    display:block;
+}
+
+#menu ul.level2 li.sousmenu:hover ul.level3,
+#menu ul.level3 li.sousmenu:hover ul.level4,
+#menu ul.level4 li.sousmenu:hover ul.level5 {
+    padding: 0;
+    top:0px;
+    left:200px;
+    border-left-style:solid;
+    border-left-width:1;
+    border-left-color:black;
+    border-right-style:solid;
+    border-right-width:1;
+    border-right-color:black;
+    border-top-style:solid;
+    border-top-width:1;
+    border-top-color:black;
+    border-bottom-style:solid;
+    border-bottom-width:1;
+    border-bottom-color:black;
+    background: #D0D0D0;
+    display:block;
+}
+

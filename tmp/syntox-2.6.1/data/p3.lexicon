@@ -1,0 +1,223 @@
+@lexicon «
+#line 1
+#file "lexicon"
+IDENTITY constantNoun;
+IDENTITY time;
+
+"<P>"	paragraph [];
+"<BR>"	br [];
+"."	dot [];
+","	comma [];
+"par conséquent"	parConséquent [];
+"si cependant"	siCependant [];
+"alors"	alors [];
+"merci de"	merciDe [];
+"BBBBBUUUUUGGGGG" bug[];
+
+je	cln [PRED:pro, number:sg, person:one];
+tu	cln [PRED:pro, number:sg, person:two];
+il	cln [PRED:pro, number:sg, person:three, gender:ms];
+elle	cln [PRED:pro, number:sg, person:three, gender:fm];
+nous	cln [PRED:pro, number:pl, person:one];
+vous	cln [PRED:pro, number:pl, person:two];
+ils	cln [PRED:pro, number:pl, person:three, gender:ms];
+elles	cln [PRED:pro, number:pl, person:three, gender:fm];
+
+le	cla [PRED:pro, gender:ms, number:sg, person:three];
+la	cla [PRED:pro, gender:fm, number:sg, person:three];
+les	cla [PRED:pro, number:pl, person:three];
+
+me	cld [PRED:pro, number:sg, person:one];
+te	cld [PRED:pro, number:sg, person:two];
+lui	cld [PRED:pro, number:sg, person:three];
+nous	cld [PRED:pro, number:pl, person:one];
+vous	cld [PRED:pro, number:pl, person:two];
+leur	cld [PRED:pro, number:pl, person:three];
+
+le	det [number:sg, gender:ms, def:yes, dem:no, poss:no];
+la	det [number:sg, gender:fm, def:yes, dem:no, poss:no];
+les	det [number:pl, def:yes, dem:no, poss:no];
+
+un	det [number:sg, gender:ms, def:no, dem:no, poss:no];
+une	det [number:sg, gender:fm, def:no, dem:no, poss:no];
+des	det [number:pl, def:no, dem:no, poss:no];
+
+mon	det [number:sg, gender:ms, def:no, poss:yes, dem:no, persPoss:one, numberPoss:sg];
+ma	det [number:sg, gender:fm, def:no, poss:yes, dem:no, persPoss:one, numberPoss:sg];
+mes	det [number:pl, def:no, poss:yes, dem:no, persPoss:one, numberPoss:sg];
+ton	det [number:sg, gender:ms, def:no, poss:yes, dem:no, persPoss:two, numberPoss:sg];
+ta	det [number:sg, gender:fm, def:no, poss:yes, dem:no, persPoss:two, numberPoss:sg];
+tes	det [number:pl, def:no, poss:yes, dem:no, persPoss:two, numberPoss:sg];
+son	det [number:sg, gender:ms, def:no, poss:yes, dem:no, persPoss:three, numberPoss:sg];
+sa	det [number:sg, gender:fm, def:no, poss:yes, dem:no, persPoss:three, numberPoss:sg];
+ses	det [number:pl, def:no, poss:yes, dem:no, persPoss:three, numberPoss:sg];
+notre	det [number:sg, def:no, poss:yes, dem:no, persPoss:one, numberPoss:pl];
+nos	det [number:pl, def:no, poss:yes, dem:no, persPoss:one, numberPoss:pl];
+votre	det [number:sg, def:no, poss:yes, dem:no, persPoss:two, numberPoss:pl];
+vos	det [number:pl, def:no, poss:yes, dem:no, persPoss:two, numberPoss:pl];
+leur	det [number:sg, def:no, poss:yes, dem:no, persPoss:three, numberPoss:pl];
+leurs	det [number:pl, def:no, poss:yes, dem:no, persPoss:three, numberPoss:pl];
+
+ce	det [number:sg, gender:ms, def:no, poss:no, dem:yes];
+ces	det [number:pl, def:no, poss:no, dem:yes];
+cette	det [number:sg, gender:fm, def:no, poss:no, dem:yes];
+
+article  nc [PRED:article, number:sg, gender:ms];
+articles  nc [PRED:article, number:pl, gender:ms];
+
+courrier  nc [PRED:courrier, number:sg, gender:ms];
+courriers  nc [PRED:courrier, number:pl, gender:ms];
+
+livraison  nc [PRED:livraison, number:sg, gender:fm];
+livraisons  nc [PRED:livraison, number:pl, gender:fm];
+
+compte  nc [PRED:compte, number:sg, gender:ms];
+comptes  nc [PRED:compte, number:pl, gender:ms];
+
+suis	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:one, number:sg]];
+es	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:two, number:sg]];
+est	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:three, number:sg]];
+sommes	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:one, number:pl]];
+êtes	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:two, number:pl]];
+sont	aux [aux:être, diathese:passive, finite:yes, mood:indicative, tense:present, subj:[person:three, number:pl]];
+
+suis aux [aux:être, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:one, number:sg]];
+es aux [aux:être, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:two, number:sg]];
+est	aux [aux:être, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:three, number:sg]];
+sommes aux [aux:être, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:one, number:pl]];
+êtes aux [aux:être, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:two, number:pl]];
+sont aux [aux:être, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:three, number:pl]];
+
+ai aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:one, number:sg]];
+as aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:two, number:sg]];
+a	aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:three, number:sg]];
+avons aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:one, number:pl]];
+avez aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:two, number:pl]];
+ont aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:passé_composé, subj:[person:three, number:pl]];
+
+avais aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:pluperfect, subj:[person:one|two, number:sg]];
+avait aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:pluperfect, subj:[person:three, number:sg]];
+avions aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:pluperfect, subj:[person:one, number:pl]];
+aviez aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:pluperfect, subj:[person:two, number:pl]];
+avaient aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:pluperfect, subj:[person:three, number:pl]];
+
+aurais aux [aux:avoir, diathese:active, finite:yes, mood:conditional, tense:past, subj:[person:one|two, number:sg]];
+aurait aux [aux:avoir, diathese:active, finite:yes, mood:conditional, tense:past, subj:[person:three, number:sg]];
+aurions aux [aux:avoir, diathese:active, finite:yes, mood:conditional, tense:past, subj:[person:one, number:pl]];
+auriez aux [aux:avoir, diathese:active, finite:yes, mood:conditional, tense:past, subj:[person:two, number:pl]];
+auraient aux [aux:avoir, diathese:active, finite:yes, mood:conditional, tense:past, subj:[person:three, number:pl]];
+
+aurai aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:future, subj:[person:one, number:sg]];
+auras aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:future, subj:[person:two, number:sg]];
+aura aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:future, subj:[person:three, number:sg]];
+aurons aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:future, subj:[person:one, number:pl]];
+aurez aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:future, subj:[person:two, number:pl]];
+auront aux [aux:avoir, diathese:active, finite:yes, mood:indicative, tense:future, subj:[person:three, number:pl]];
+
+aie aux [aux:avoir, diathese:active, finite:yes, mood:subjonctive, tense:past, subj:[person:one, number:sg]];
+aies aux [aux:avoir, diathese:active, finite:yes, mood:subjonctive, tense:past, subj:[person:two, number:sg]];
+ait aux [aux:avoir, diathese:active, finite:yes, mood:subjonctive, tense:past, subj:[person:three, number:sg]];
+ayons aux [aux:avoir, diathese:active, finite:yes, mood:subjonctive, tense:past, subj:[person:one, number:pl]];
+ayez aux [aux:avoir, diathese:active, finite:yes, mood:subjonctive, tense:past, subj:[person:two, number:pl]];
+aient aux [aux:avoir, diathese:active, finite:yes, mood:subjonctive, tense:past, subj:[person:three, number:pl]];
+
+commande v[PRED:commander, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+commandé v[PRED:commander, aux:avoir, pastp:yes, gender:ms, number:sg];
+commandés v[PRED:commander, aux:avoir, pastp:yes, gender:ms, number:pl];
+commandée v[PRED:commander, aux:avoir, pastp:yes, gender:fm, number:sg];
+commandées v[PRED:commander, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+reçois v[PRED:recevoir, pastp:no, subj:[person:one|two, number:sg], tense:present, finite:yes, mood:indicative];
+reçoit v[PRED:recevoir, pastp:no, subj:[person:three, number:sg], tense:present, finite:yes, mood:indicative];
+recevons v[PRED:recevoir, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:indicative];
+recevez v[PRED:recevoir, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:indicative];
+reçoivent v[PRED:recevoir, pastp:no, subj:[person:three, number:pl], tense:present, finite:yes, mood:indicative];
+
+reçu v[PRED:recevoir, aux:avoir, pastp:yes, gender:ms, number:sg];
+reçus v[PRED:recevoir, aux:avoir, pastp:yes, gender:ms, number:pl];
+reçue v[PRED:recevoir, aux:avoir, pastp:yes, gender:fm, number:sg];
+reçues v[PRED:recevoir, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+rembourse v[PRED:rembourser, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+rembourses v[PRED:rembourser, pastp:no, subj:[person:two, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+remboursons v[PRED:rembourser, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:indicative];
+remboursez v[PRED:rembourser, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:indicative];
+remboursent v[PRED:rembourser, pastp:no, subj:[person:three, number:pl], tense:present, finite:yes, mood:indicative|subjunctive];
+
+remboursions v[PRED:rembourser, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:subjunctive]
+	|v[PRED:rembourser, pastp:no, subj:[person:one, number:pl], tense:past, finite:yes, mood:indicative];
+remboursiez v[PRED:rembourser, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:subjunctive]
+	|v[PRED:rembourser, pastp:no, subj:[person:two, number:pl], tense:past, finite:yes, mood:indicative];
+
+rembourserai v[PRED:rembourser, pastp:no, subj:[person:one, number:sg], tense:future, finite:yes, mood:indicative];
+rembourseras v[PRED:rembourser, pastp:no, subj:[person:two, number:sg], tense:future, finite:yes, mood:indicative];
+remboursera v[PRED:rembourser, pastp:no, subj:[person:three, number:sg], tense:future, finite:yes, mood:indicative];
+rembourserons v[PRED:rembourser, pastp:no, subj:[person:one, number:sg], tense:future, finite:yes, mood:indicative];
+rembourserez v[PRED:rembourser, pastp:no, subj:[person:two, number:sg], tense:future, finite:yes, mood:indicative];
+rembourseront v[PRED:rembourser, pastp:no, subj:[person:three, number:sg], tense:future, finite:yes, mood:indicative];
+
+remboursé v[PRED:rembourser, aux:avoir, pastp:yes, gender:ms, number:sg];
+remboursés v[PRED:rembourser, aux:avoir, pastp:yes, gender:ms, number:pl];
+remboursée v[PRED:rembourser, aux:avoir, pastp:yes, gender:fm, number:sg];
+remboursées v[PRED:rembourser, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+envoie v[PRED:envoyer, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+envoies v[PRED:envoyer, pastp:no, subj:[person:two, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+envoyons v[PRED:envoyer, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:indicative];
+envoyez v[PRED:envoyer, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:indicative];
+envoyent v[PRED:envoyer, pastp:no, subj:[person:three, number:pl], tense:present, finite:yes, mood:indicative|subjunctive];
+
+envoyions v[PRED:envoyer, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:subjunctive]
+	|v[PRED:envoyer, pastp:no, subj:[person:one, number:pl], tense:past, finite:yes, mood:indicative];
+envoyiez v[PRED:envoyer, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:subjunctive]
+	|v[PRED:envoyer, pastp:no, subj:[person:two, number:pl], tense:past, finite:yes, mood:indicative];
+
+enverrai v[PRED:envoyer, pastp:no, subj:[person:one, number:sg], tense:future, finite:yes, mood:indicative];
+enverras v[PRED:envoyer, pastp:no, subj:[person:two, number:sg], tense:future, finite:yes, mood:indicative];
+enverra v[PRED:envoyer, pastp:no, subj:[person:three, number:sg], tense:future, finite:yes, mood:indicative];
+enverrons v[PRED:envoyer, pastp:no, subj:[person:one, number:sg], tense:future, finite:yes, mood:indicative];
+enverrez v[PRED:envoyer, pastp:no, subj:[person:two, number:sg], tense:future, finite:yes, mood:indicative];
+enverront v[PRED:envoyer, pastp:no, subj:[person:three, number:sg], tense:future, finite:yes, mood:indicative];
+
+envoyé v[PRED:envoyer, aux:avoir, pastp:yes, gender:ms, number:sg];
+envoyés v[PRED:envoyer, aux:avoir, pastp:yes, gender:ms, number:pl];
+envoyée v[PRED:envoyer, aux:avoir, pastp:yes, gender:fm, number:sg];
+envoyées v[PRED:envoyer, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+tiens   v[PRED:tenir(compte), pastp:no, finite:yes, mood:indicatif, tense:present, subj:[person:one|two, number:sg], objC:[PRED:compte, det:no, number:sg]];
+tient   v[PRED:tenir(compte), pastp:no, finite:yes, mood:indicatif, tense:present, subj:[person:three, number:sg], objC:[PRED:compte, det:no, number:sg]];
+tenons   v[PRED:tenir(compte), pastp:no, finite:yes, mood:indicatif, tense:present, subj:[person:one, number:pl], objC:[PRED:compte, det:no, number:sg]];
+tenez   v[PRED:tenir(compte), pastp:no, finite:yes, mood:indicatif, tense:present, subj:[person:two, number:pl], objC:[PRED:compte, det:no, number:sg]];
+tiennent   v[PRED:tenir(compte), pastp:no, finite:yes, mood:indicatif, tense:present, subj:[person:three, number:pl], objC:[PRED:compte, det:no, number:sg]];
+tenir   v[PRED:tenir(compte), pastp:no, finite:no, subj:[], objC:[PRED:compte, det:no, number:sg]];
+
+demande	v [PRED:demander, 
+	   pastp:no, 
+	   tense:present, 
+	   mood:indicative|subjonctive, 
+	   subj:[person:one|three, number:sg],
+	   scomp:[mood:Mood, form:Form],
+	   vcomp:[form:de]]
+{
+		test (Form = int) ⇒ (Mood = indicative);
+		test (Form = aff) ⇒ (Mood = subjunctive);
+}
+;
+
+ne	clneg[];
+pas	advneg[];
+
+que	csu[form:aff];
+si	csu[form:int];
+
+toujours	adv[PRED:pas_encore]
+		|adv[PRED:toujours];
+
+de prep[pcas:de];
+à prep[pcas:à];
+pour prep[pcas:pour];
+sur prep[pcas:sur];
+avant prep[pcas:avant];
+après prep[pcas:après];
+contre prep[pcas:contre];
+»

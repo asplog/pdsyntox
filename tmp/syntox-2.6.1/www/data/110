@@ -1,0 +1,1060 @@
+<?php
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 10';
+$subtitle='';
+
+$in=array(array('Thomas Smith enseigne les U.E. arithmétique et cryptologie. a)','
+Axiom[PRED:enseigner, 
+  tense:present,
+  subj:[FORM:&quot;Thomas Smith&quot;],
+  obj:[PRED:ue,
+       number:pl,
+       def:yes,
+       mod:<[PRED:strongEt,
+             arg1:[FORM:&quot;arithmétique&quot;],
+             arg2:[FORM:&quot;cryptologie&quot;]]
+           >
+      ]
+ ]
+'), 
+	  array('Thomas Smith enseigne les U.E. arithmétique et cryptologie. b)', '
+Axiom[PRED:enseigner,
+  tense:present,
+  subj:[FORM:&quot;Thomas Smith&quot;],
+  obj:[PRED:ue,
+       number:pl,
+       def:yes,
+       mod:<[PRED:weakEt,
+             arg1:[FORM:&quot;arithmétique&quot;],
+             arg2:[PRED:strongEt,
+                   arg1:[FORM:&quot;cryptologie&quot;],
+                   arg2:[FORM:&quot;chimie organique&quot;]]]>]]
+'),
+	  array('Thomas Smith enseigne les U.E. arithmétique et cryptologie. c)', '
+Axiom[PRED:enseigner,
+  tense:present,
+  neg:yes,
+  subj:[FORM:&quot;Thomas Smith&quot;],
+  obj:[PRED:ue,
+       number:pl,
+       def:yes,
+       mod:<[PRED:weakEt,
+             arg1:[FORM:&quot;arithmétique&quot;],
+             arg2:[PRED:strongEt,
+                   arg1:[FORM:&quot;cryptologie&quot;],
+                   arg2:[FORM:&quot;chimie organique&quot;]]]>]]
+'),
+	  array('109 étudiants a)', '
+Axiom[PRED:étudiant,
+   number:pl,
+   quant:[FORM:&quot;109&quot;]]
+'),
+	  array('109 étudiants b)', '
+Axiom[PRED:inscrire,
+   tense:present,
+   subj:[PRED:étudiant,
+         quant:[FORM:&quot;109&quot;]]]
+'),
+	  array('109 étudiants c)', '
+Axiom[PRED:inscrire,
+   tense:passe_compose,
+   subj:[PRED:secrétariat, number:sg, def:yes],
+   obj:[PRED:étudiant,
+         quant:[FORM:&quot;109&quot;]]]
+'),
+	  
+	  array('L\'amphi est libre a)', '
+Axiom[PRED:être_libre,
+   acomp:[],
+   tense:present,
+   subj:[PRED:amphi, number:sg, def:yes]
+]'),
+	  array('L\'amphi est libre b)', '
+Axiom[PRED:être_libre,
+   acomp:[],
+   neg:yes,
+   tense:past,
+   subj:[PRED:amphi, number:sg, def:yes]
+]'),
+	  array('L\'amphi est libre c)', '
+Axiom[PRED:être_libre,
+   acomp:[],
+   neg:yes,
+   tense:future,
+   subj:[PRED:amphi, number:sg, def:yes],
+   modP:<[FORM:&quot;26 mars 2012&quot;]>
+]'),
+	  array('L\'amphi est libre d)', '
+Axiom[PRED:être_libre,
+   acomp:[],
+   neg:yes,
+   tense:future,
+   subj:[PRED:amphi, number:sg, def:yes, mod:<[FORM:&quot;C Bât A29&quot;]>],
+   modP:<
+[FORM:&quot;26 mars 2012&quot;]
+,[PRED:laps, arg1:[FORM:&quot;8h30&quot;], arg2:[FORM:&quot;12h00&quot;]]
+>
+]'),
+	  array('Il n\'est pas possible a)', '
+	  Axiom[PRED:être_possible,
+		acomp:[],
+		neg:yes,
+		tense:present,
+		subj:[PRED:pro, number:sg, gender:ms, person:three],
+		scomp:[PRED:inscrire,
+		       tense:present,
+		       subj:[PRED:étudiant,
+			     quant:[FORM:&quot;109&quot;]],
+		       mod:<[PRED:actuellement]>]]'),
+	  array('Il n\'est pas possible b)', '
+Axiom[PRED:être_possible,
+   acomp:[],
+   neg:yes,
+   tense:future,
+   subj:[PRED:pro, number:sg, gender:ms, person:three],
+   vcomp:[PRED:de, arg:[PRED:placer,
+                        obj:[PRED:cours,
+                             number:sg,
+                             def:no,
+                             mod:<[FORM:&quot;Traitement d&apos;images&quot;]>]]]
+]'),
+	  array('Parceque 1', '
+Axiom[PRED:cause,
+arg1:[PRED:être_libre,
+   acomp:[],
+   neg:yes,
+   tense:future,
+   subj:[PRED:amphi, number:sg, def:yes, mod:<[FORM:&quot;C Bât A29&quot;]>],
+   modP:<[FORM:&quot;26 mars 2012&quot;],[PRED:laps, arg1:[FORM:&quot;8h30&quot;], arg2:[FORM:&quot;12h00&quot;]]>],
+
+arg2:[PRED:être_possible,
+   acomp:[],
+   neg:yes,
+   tense:present,
+   subj:[PRED:pro, number:sg, gender:ms, person:three],
+   vcomp:[PRED:de, arg:[PRED:placer,
+                        loc:[PRED:pro],
+                        obj:[PRED:cours,
+                             number:sg,
+                             def:no,
+                             mod:<[FORM:&quot;Traitement d&apos;images&quot;]>]]]
+]
+]'),
+	  array('L\'étudiant Thomas Smith a)', '
+Axiom[PRED:étudiant,
+   number:sg,
+   gender:ms,
+   def:yes,
+   mod:<[FORM:&quot;Thomas Smith&quot;]>]'),
+	  array('L\'étudiant Thomas Smith b)', '
+Axiom[
+PRED:valider,
+subj:[PRED:étudiant,
+   number:sg,
+   gender:ms,
+   def:yes,
+   mod:<[FORM:&quot;Thomas Smith&quot;]>],
+obj:[PRED:semestre]
+]'),
+	  array('L\'étudiant Thomas Smith c)', '
+Axiom[
+PRED:valider,
+tense:passe_compose,
+subj:[PRED:étudiant,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[FORM:&quot;Thomas Smith&quot;]>],
+obj:[PRED:semestre,
+     number:sg, poss:yes, persPoss:three, numberPoss:sg]
+]'),
+	  array('L\'étudiant Thomas Smith d)', '
+Axiom[
+PRED:avoir,
+tense:passe_compose,
+subj:[PRED:étudiant,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[FORM:&quot;Thomas Smith&quot;]>],
+obj:[FORM:&quot;12.5&quot;],
+obl:[PRED:de, arg:[FORM:&quot;moyenne&quot;]]
+]'),
+	  array('L\'étudiant Thomas Smith e) Cause', '
+Axiom[PRED:cause,
+arg1:[
+PRED:avoir,
+tense:passe_compose,
+subj:[PRED:étudiant,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[FORM:&quot;Thomas Smith&quot;]>],
+obj:[FORM:&quot;12.5&quot;],
+obl:[PRED:de, arg:[FORM:&quot;moyenne&quot;]]
+],
+arg2:[
+PRED:valider,
+tense:passe_compose,
+subj:[PRED:pro, number:sg, gender:ms, person:three],
+obj:[PRED:semestre,
+     poss:yes, number:sg, poss:yes, persPoss:three, numberPoss:sg]
+]]'),
+	  array('L\'étudiant Thomas Smith e) Conséquence', '
+Axiom[PRED:conséquence,
+arg1:[
+PRED:avoir,
+tense:passe_compose,
+subj:[PRED:pro, number:sg, gender:ms, person:three],
+obj:[FORM:&quot;12.5&quot;],
+obl:[PRED:de, arg:[FORM:&quot;moyenne&quot;]]
+],
+arg2:[
+PRED:valider,
+tense:passe_compose,
+subj:[PRED:étudiant,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[FORM:&quot;Thomas Smith&quot;]>],
+obj:[PRED:semestre,
+     poss:yes, number:sg, poss:yes, persPoss:three, numberPoss:sg]
+]]'),
+	  array('Le cours de cryptologie a)', '
+Axiom[
+PRED:avoir_lieu,
+obj:[],
+subj:[PRED:cours,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[PRED:de, arg:[FORM:&quot;cryptologie&quot;]]>],
+modP:<[FORM:&quot;23 mars 2012&quot;]>]'),
+	  array('Le cours de cryptologie b)', '
+Axiom[
+PRED:avoir_lieu,
+tense:future,
+obj:[],
+subj:[PRED:cours,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[PRED:de, arg:[FORM:&quot;cryptologie&quot;]]>]
+,modP:<[FORM:&quot;23 mars 2012&quot;]>
+,obl:[PRED:dans, arg:[PRED:salle, number:sg, def:yes, mod:<[FORM:&quot;256&quot;]>]]
+]'),
+	  array('Le cours de cryptologie c)', '
+Axiom[
+PRED:avoir_lieu,
+tense:future,
+obj:[],
+subj:[PRED:cours,
+      number:sg,
+      gender:ms,
+      def:yes,
+      mod:<[PRED:de, arg:[FORM:&quot;cryptologie&quot;]]>]
+,modP:<[FORM:&quot;23 mars 2012&quot;]>
+,obl:[PRED:dans, 
+      arg:[PRED:salle, number:sg, def:yes, 
+           mod:<[PRED:de, arg:[PRED:bâtiment, number:sg, def:yes, mod:<[FORM:&quot;A29&quot;]>]],
+                [FORM:&quot;256&quot;]>]]
+]'),
+	  array('La spécialité Génie Logiciel a)', '
+Axiom[
+PRED:spécialité,
+number:sg,
+def:yes,
+mod:<[FORM:&quot;Génie Logiciel&quot;]>
+]'),
+	  array('La spécialité Génie Logiciel b)', '
+Axiom[
+PRED:compter,
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Génie Logiciel&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+     quant:[PRED:max]]
+]'),
+	  array('La spécialité Génie Logiciel c)', '
+Axiom[
+PRED:compter,
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Génie Logiciel&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+     quant:[PRED:max]],
+modP:<[PRED:avec,
+       arg:[PRED:inscrit,
+            number:pl,
+            gender:ms,
+            quant:[FORM:&quot;45&quot;]]]>
+]'),
+	  array('La spécialité Génie Logiciel d)', '
+
+Axiom[
+PRED:succ,
+
+args:<
+[
+PRED:compter,
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Génie Logiciel&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+     quant:[PRED:max]],
+modP:<[PRED:avec,
+       arg:[PRED:inscrit,
+            number:pl,
+            gender:ms,
+            quant:[FORM:&quot;45&quot;]]]>
+],
+
+[
+PRED:compter,
+connection:[FORM:&quot;puis&quot;],
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Réseaux Systèmes et Mobilité&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+quant:[FORM:&quot;40&quot;]]
+],
+
+[
+PRED:compter,
+connection:[FORM:&quot;puis&quot;],
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Image Son Vidéo&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+quant:[FORM:&quot;25&quot;]]
+],
+
+[
+PRED:compter,
+connection:[FORM:&quot;puis&quot;],
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Cryptologie et Sécurité Informatique&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+quant:[FORM:&quot;20&quot;]]
+],
+
+[
+PRED:compter,
+connection:[FORM:&quot;enfin&quot;],
+subj:[PRED:spécialité,
+      number:sg,
+      def:yes,
+      mod:<[FORM:&quot;Algorithmique et méthodes formelles&quot;]>],
+obj:[PRED:étudiant,
+     number:pl,
+     gender:ms,
+quant:[FORM:&quot;7&quot;]]
+]
+
+>
+]
+'
+		)
+	  );
+
+$gr='
+Axiom → T dot
+{
+	↓1 := ↑ ∪ [mood:indicative];
+};
+
+Axiom → NP
+{
+	↓1 := ↑; 
+};
+
+T → T dot T
+{
+	[PRED:succ, args:<Head::Tail>];
+	↓1 := Head;
+	↓3 := [PRED:succ, args:Tail];
+};
+
+T →
+{
+	[PRED:succ, args:NIL];
+};
+
+T → T dot T
+{
+	[PRED:cause, arg1:A1, arg2:A2];
+	↓1 := A1;
+	↓3 := A2;
+};
+
+T → T comma parConsequent T
+{
+	[PRED:cause, arg1:A1, arg2:A2];
+	↓1 := A1;
+	↓4 := A2;
+};
+
+T → T parceQue T
+{
+	[PRED:conséquence, arg1:A1, arg2:A2];
+	↓1 := A2;
+	↓3 := A1;
+};
+
+T → T car T
+{
+	[PRED:conséquence, arg1:A1, arg2:A2];
+	↓1 := A2;
+	↓3 := A1;
+};
+
+T → connection S
+{
+	[connection:C] ⊂ ↑;
+	↓1 := C;
+};
+
+T → S
+{
+	[connection:NIL];
+	↓1 := ↑; 
+};
+
+S → NP|cln VP
+{
+	[modP:NIL, subj:S, Rest];
+	↓1 := S;
+	SyntS := ⇓1;
+	↓2 := Rest ∪ [subj:SyntS, mood:indicative|subjonctive];
+};
+
+S → VP
+{
+	[modP:NIL, subj:[PRED:pro]];
+	↓1 := ↑ ∪ [subj:[PRED:pro], mood:imperative];
+};
+
+S → TIME comma S
+{
+	// Règle de filtrage
+	[modP:<Head::Tail>, X];
+	↓1 := Head;
+	↓3 := [X, modP:Tail];
+	⇑ := X ∪ ⇓3;
+};
+
+S → S TIME
+{
+	// Règle de filtrage
+	[modP:<Head::Tail>, X];
+	↓2 := Head;
+	↓1 := [X, modP:Tail];
+	⇑ := X ∪ ⇓1;
+};
+
+S → S PP
+{
+	[modP:<Head::Tail>, X];
+	↓2 := Head;
+	↓1 := [X, modP:Tail];
+	⇑ := X ∪ ⇓1;
+};
+
+TIME → le date
+{
+	↓2 := ↑;
+
+};
+
+TIME → de date à date
+{
+	[PRED:laps, arg1:A1, arg2:A2];
+	↓2 := A1;
+	↓4 := A2;
+};
+
+NP → number N
+{
+	[quant:Q, X];
+	↓1 := Q;
+	↓2 := X;
+	⇑ := ↑ ∪ ⇓2 ∪ [number:pl, person:three];
+};
+
+NP → det N
+{
+	[quant:NIL, poss:NIL, dem:NIL];
+	↓1 := ↑ ∪ [poss:no, dem:no];
+	↓2 := ↑;
+	test ⇓1 ∪ ⇓2;
+	⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:three];
+};
+
+NP → det N
+{
+  	[quant:NIL, poss:yes, dem:NIL];
+  	↓1 := ↑ ∪ [dem:no, def:nc];
+	↓2 := ↑;
+	test ⇓1 ∪ ⇓2;
+	⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:three];
+};
+
+NP → det N
+{
+	[quant:NIL, poss:NIL, dem:yes];
+	↓1 := ↑ ∪ [poss:no, def:nc];
+	↓2 := ↑;
+	test ⇓1 ∪ ⇓2;
+	⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:three];
+};
+
+NP → pn
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+NP → NP and NP
+{
+	[arg1:A1, arg2:A2];
+	order $2 $1 $3;
+	↓2 := ↑;
+	↓1 := A1;
+	↓3 := A2;
+	⇑ := ↑ ∪ [number:pl];
+};
+
+N → nc
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N → adj N
+{
+	// Règle de filtrage
+	[mod:<Head::Tail>, X];
+	
+	// Passage des traits top-bottom
+	[number:N, gender:G] ⊂ ↑;
+	↓1 := Head ∪ [number:N, gender:G];
+	
+	// Passage des traits bottom-up
+	[number:N1, gender:G1, pre:yes] ⊂ ⇓1;
+
+	// Passage des traits communs entre adj et le syntagme nominal
+	↓2 := [X, mod:Tail] ∪ [number:N1, gender:G1];
+
+	// Passage des traits vers le haut
+	⇑ := X ∪ ⇓2 ∪ [number:N1, gender:G1];
+};
+
+N → N adj
+{
+	// Règle de filtrage
+	[mod:<Head::Tail>, X];
+	
+	// Passage des traits top-bottom
+	[number:N, gender:G] ⊂ ↑;
+
+	order $2 $1;
+	↓2 := Head ∪ [number:N, gender:G];
+	
+	// Passage des traits bottom-up
+	[number:N2, gender:G2, post:yes] ⊂ ⇓2;
+
+	// Passage des traits communs entre adj et le syntagme nominal
+	↓1 := [X, mod:Tail] ∪ [number:N2, gender:G2];
+
+	// Passage des traits vers le haut
+	⇑ := X ∪ ⇓1 ∪ [number:N2, gender:G2];
+};
+
+N → N RP
+{
+	[mod:<Head::Tail>, Rest];
+	[number:Nh, gender:Gh] ⊂ ↑;
+	
+	// Passage des traits communs entre la relative et le nom
+	↓1 := [Rest, mod:Tail];
+	[number:Ns, gender:Gs] ⊂ ⇓1;
+
+	↓2 := Head ∪ [number:Nh, gender:Gh] ∪ [number:Ns, gender:Gs];
+
+	⇑ := Rest ∪ ⇓1;
+};
+
+N → N NP
+{
+	// Règle de filtrage
+	[mod:<Head::Tail>, X];
+
+	// Passage des traits top-bottom
+	↓2 := Head;
+	
+	// Passage du syntagme nominal
+	↓1 := [X, mod:Tail];
+
+	// Passage des traits vers le haut
+	⇑ := X ∪ ⇓1;
+};
+
+N → N PP
+{
+	// Règle de filtrage
+	[mod:<Head::Tail>, X];
+
+	// Passage des traits top-bottom
+	↓2 := Head;
+	
+	// Passage du syntagme nominal
+	↓1 := [X, mod:Tail];
+
+	// Passage des traits vers le haut
+	⇑ := X ∪ ⇓1;
+};
+
+AP → adj
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+AP → adv AP
+{
+	[X, mod:<H::T>];
+	↓1 := [X, mod:T];
+	↓2 := H;
+};
+
+VP → V
+{
+	[mod:NIL, obj:NIL, obl:NIL, acomp:NIL, scomp:NIL, vs:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+VP → VP AP
+{
+	[acomp:ACOMP, obj:NIL, obl:NIL, scomp:NIL, vcomp:NIL];
+	[acomp:Y, NOTACOMP] ⊂ ↑;
+	↓1 := NOTACOMP;
+	[acomp:ACOMP1] ⊂ ⇓1;
+	↓2 := ACOMP ∪ ACOMP1;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP adv AP
+{
+	[mod:<Head::Tail>, acomp:ACOMP, obj:NIL, obl:NIL, scomp:NIL, vcomp:NIL];
+	[acomp:Y, X] ⊂ ↑;
+	↓1 := [X, mod:Tail];
+	↓2 := Head;
+	[acomp:ACOMP1] ⊂ ⇓1;
+	↓3 := ACOMP ∪ ACOMP1;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP Empty
+{
+	[obj:OBJ, obl:NIL];
+	[obj:OBJ, X] ⊂ ↑;
+	[obj:OBJSynt] ⊂ ⇓1;
+	↓1 := X ∪ [objExtr:OBJ];
+	↓2 := OBJ ∪ OBJSynt;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+Empty →
+{
+	[PRED:none];
+};
+
+VP → VP NP
+{
+	[obj:OBJ, obl:NIL];
+	[obj:Y, X] ⊂ ↑;
+	[obj:OBJ1] ⊂ ⇓1;
+	↓1 := X;
+	↓2 := OBJ ∪ OBJ1;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP PP
+{
+	[obl:OBL, X];
+	↓1 := X;
+	↓2 := OBL;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP SP
+{
+	[scomp:SCOMP, NOTSCOMP];
+	↓1 := NOTSCOMP;
+	[scomp:SCOMP1] ⊂ ⇓1;
+	↓2 := SCOMP ∪ SCOMP1;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP VCOMP
+{
+	[vcomp:VCOMP, X];
+	↓1 := X;
+	↓2 := VCOMP;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VCOMP → VP
+{
+	↓1 := ↑;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VCOMP → prep VP
+{
+	[arg:A, B];
+	↓1 := B;
+	↓2 := A;
+	[arg:ASynt] ⊂ ⇓2;
+	⇑ := ASynt ∪ ↑;
+};
+
+VP → adv VP
+{
+	[X, mod:<Head::Tail>];
+	↓1 := Head;
+	↓2 := [X, mod:Tail];
+	⇑ := ⇓2;
+ };
+
+VP → VP adv
+{
+	[X, mod:<Head::Tail>];
+	↓2 := Head;
+	↓1 := [X, mod:Tail];
+	⇑ := ⇓1;
+};
+
+// passive
+V → (clneg) aux (advneg) v
+{
+	[X, subj:S];
+	[tense:T, mood:M] ⊂ ↑;
+	[neg:Neg] ⊂ ↑;
+	[number:N, gender:G] ⊂ S;
+	order $4 $2 $1 $3;
+	test $1 ⇔ $3;
+	test ($1 ⇔ (Neg = yes));
+	↓4 := X ∪ [aux:avoir, pastp:yes, number:N, gender:G];
+        ↓2 := [aux:être, diathese:passive, tense:T, mood:M, subj:S];
+	↓1 := ↑; 
+	↓3 := ↑; 
+	⇑ := ⇓4;
+};
+
+// active
+// manque verbes intransitifs
+V → (clneg) aux (advneg) v
+{
+	[X, subj:S];
+	[tense:T, mood:M] ⊂ ↑;
+	[neg:Neg] ⊂ ↑;
+	test $1 ⇔ $3;
+	test ($1 ⇔ (Neg = yes));
+	// Si l\'objet est extrait, il s\'accorde
+	// en genre et en nombre avec le participe
+	[objExtr:OBJEXTR] ⊂ ↑;
+	↓1 := ↑; 
+        ↓2 := [diathese:active, tense:T, mood:M, subj:S];
+	↓3 := ↑; 
+	[aux:AUX] ⊂ ⇓2;
+	if (OBJEXTR) {
+		[objExtr:[number:N, gender:G]] ⊂ ↑;
+		↓4 := X ∪ [aux:AUX, pastp:yes, number:N, gender:G];
+	} 
+	else {
+	     if (AUX = avoir)
+	     	↓4 := X ∪ [aux:avoir, pastp:yes, number:sg, gender:ms];
+	     else {
+		[number:N, gender:G] ⊂ S;
+		↓4 := X ∪ [aux:être, pastp:yes, number:N, gender:G];
+	}
+	}
+	⇑ := ⇓4;
+};
+
+V → (clneg) v (advneg)
+{
+	[neg:Neg] ⊂ ↑;
+	test $1 ⇔ $3;
+	test ($1 ⇔ (Neg = yes));
+	↓1 := ↑; 
+	↓2 := ↑ ∪ [mood:indicative|subjonctive|imperative, pastp:no];
+	↓3 := ↑; 
+	⇑ := ⇓2;
+};
+
+PP → prep NP
+{
+	[arg:A, B];
+	↓1 := B;
+	↓2 := A;
+	⇑ := ⇓1;
+};
+
+SP → csu S
+{
+	↓1 := ↑;
+	↓2 := ↑;
+	⇑ := ⇓2;
+};
+
+RP → prel S
+{
+	[number:N];
+	↓1 := ↑;
+	[fct:FCT] ⊂ ⇓1;
+	↓2 := ↑ ∪ [FCT:[PRED:none, number:N]];
+};
+';
+
+$lx='
+IDENTITY pn;
+IDENTITY number;
+IDENTITY date;
+
+"étant donné que"	etantDonneQue [];
+"parce que"	parceQue [];
+"par conséquent"	parConsequent [];
+"car"	car [];
+
+"le plus grand nombre de" quant[PRED:max];
+"le moins grand nombre de" quant[PRED:min];
+
+que csu [];
+
+en	prep[PRED:en];
+
+de	prep [PRED:de]|
+	de [];
+
+à	prep [PRED:à]|
+	à [];
+
+dans	prep [PRED:dans];
+avec	prep [PRED:avec];
+
+"."	dot [];
+","	and [PRED:weakEt]
+	|comma [];
+et	and [PRED:strongEt];
+
+je	cln [PRED:pro, number:sg, person:one];
+tu	cln [PRED:pro, number:sg, person:two];
+il	cln [PRED:pro, number:sg, person:three, gender:ms];
+elle	cln [PRED:pro, number:sg, person:three, gender:fm];
+nous	cln [PRED:pro, number:pl, person:one];
+vous	cln [PRED:pro, number:pl, person:two];
+ils	cln [PRED:pro, number:pl, person:three, gender:ms];
+elles	cln [PRED:pro, number:pl, person:three, gender:fm];
+
+le	det [number:sg, gender:ms, def:yes]
+	|le [];
+la	det [number:sg, gender:fm, def:yes];
+les	det [number:pl, def:yes];
+
+un	det [number:sg, gender:ms, def:no];
+une	det [number:sg, gender:fm, def:no];
+des	det [number:pl, def:no];
+
+mon	det [number:sg, gender:ms, poss:yes, persPoss:one, numberPoss:sg];
+ma	det [number:sg, gender:fm, poss:yes, persPoss:one, numberPoss:sg];
+mes	det [number:pl, poss:yes, persPoss:one, numberPoss:sg];
+ton	det [number:sg, gender:ms, poss:yes, persPoss:two, numberPoss:sg];
+ta	det [number:sg, gender:fm, poss:yes, persPoss:two, numberPoss:sg];
+tes	det [number:pl, poss:yes, persPoss:two, numberPoss:sg];
+son	det [number:sg, gender:ms, poss:yes, persPoss:three, numberPoss:sg];
+sa	det [number:sg, gender:fm, poss:yes, persPoss:three, numberPoss:sg];
+ses	det [number:pl, poss:yes, persPoss:three, numberPoss:sg];
+notre	det [number:sg, poss:yes, persPoss:one, numberPoss:pl];
+nos	det [number:pl, poss:yes, persPoss:one, numberPoss:pl];
+votre	det [number:sg, poss:yes, persPoss:two, numberPoss:pl];
+vos	det [number:pl, poss:yes, persPoss:two, numberPoss:pl];
+leur	det [number:sg, poss:yes, persPoss:three, numberPoss:pl];
+leurs	det [number:pl, poss:yes, persPoss:three, numberPoss:pl];
+
+ce	det [number:sg, gender:ms, dem:yes, poss:no];
+ces	det [number:pl, dem:yes, poss:no];
+cette	det [number:sg, gender:fm, dem:yes, poss:no];
+
+étudiant  nc [PRED:étudiant, number:sg, gender:ms];
+étudiants  nc [PRED:étudiant, number:pl, gender:ms];
+étudiante  nc [PRED:étudiant, number:sg, gender:fm];
+étudiantes  nc [PRED:étudiant, number:pl, gender:fm];
+"U.E."  nc [PRED:ue, gender:fm];
+amphi  nc [PRED:amphi, number:sg, gender:ms];
+amphis  nc [PRED:amphi, number:pl, gender:ms];
+salle  nc [PRED:salle, number:sg, gender:fm];
+salles  nc [PRED:salle, number:pl, gender:fm];
+cours  nc [PRED:cours, gender:ms];
+semestre  nc [PRED:semestre, number:sg, gender:ms];
+semestres  nc [PRED:semestre, number:pl, gender:ms];
+moyenne  nc [PRED:moyenne, number:sg, gender:fm];
+moyennes  nc [PRED:moyenne, number:pl, gender:fm];
+lieu  nc [PRED:lieu, number:sg, gender:ms];
+lieux  nc [PRED:lieu, number:pl, gender:ms];
+bâtiment  nc [PRED:bâtiment, number:sg, gender:ms];
+bâtiments  nc [PRED:bâtiment, number:pl, gender:ms];
+spécialité  nc [PRED:spécialité, number:sg, gender:fm];
+spécialités  nc [PRED:spécialité, number:pl, gender:fm];
+secrétariat  nc [PRED:secrétariat, number:sg, gender:ms];
+secrétariats  nc [PRED:secrétariat, number:pl, gender:ms];
+
+valide	v [PRED:valider, pastp:no, tense:present, mood:indicative|subjonctive, subj:[person:one|three, number:sg]];
+validé	v [PRED:valider, obj:[], aux:avoir, gender:ms, number:sg, pastp:yes];
+
+compte	v [PRED:compter, obj:[], pastp:no, tense:present, mood:indicative|subjonctive, subj:[person:one|three, number:sg]];
+compté	v [PRED:compter, obj:[], aux:avoir, pastp:yes, gender:ms, number:sg];
+
+trouve	v [PRED:trouver, obj:[], tense:present, mood:indicative|subjonctive, subj:[person:one|three, number:sg]];
+
+eu	v [PRED:avoir, obj:[], aux:avoir, gender:ms, number:sg, pastp:yes];
+
+enseigne	v [PRED:enseigner, pastp:no, tense:present, mood:indicative|subjonctive, subj:[person:one|three, number:sg]];
+
+est	aux [aux:être, diathese:passive, mood:indicative, tense:present, subj:[person:three, number:sg]]
+	|v [PRED:être, pastp:no, tense:present, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[number:sg, gender:G]]
+	|v [PRED:être_libre, pastp:no, tense:present, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[PRED:libre, number:sg, gender:G]]
+	|v [PRED:être_possible, lex:one, tense:present, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[PRED:possible, number:sg, gender:G], scomp:[mood:subjonctive], vcomp:[]];
+
+était	aux [aux:être, diathese:passive, mood:indicative, tense:past, subj:[person:three, number:sg]]
+	|v [PRED:être, tense:past, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[number:sg, gender:G]]
+	|v [PRED:être_libre, tense:past, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[PRED:libre, number:sg, gender:G]]
+	|v [PRED:être_possible, tense:past, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[PRED:possible, number:sg, gender:G], scomp:[mood:subjonctive], vcomp:[]];
+
+sera	aux [aux:être, diathese:passive, mood:indicative, tense:future, subj:[person:three, number:sg]]
+	|v [PRED:être, tense:future, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[number:sg, gender:G]]
+	|v [PRED:être_libre, tense:future, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[PRED:libre, number:sg, gender:G]]
+	|v [PRED:être_possible, tense:future, mood:indicative, subj:[person:three, number:sg, gender:G], acomp:[PRED:possible, number:sg, gender:G], scomp:[mood:subjonctive], vcomp:[]];
+
+sont	aux [aux:être, diathese:passive, mood:indicative, tense:present, subj:[person:three, number:pl]]
+	|v [PRED:être, tense:present, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[number:pl, gender:G]]
+	|v [PRED:être_libre, tense:present, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[PRED:libre, number:pl, gender:G]]
+	|v [PRED:être_possible, tense:present, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[PRED:possible, number:pl, gender:G]];
+
+soient	aux [aux:être, diathese:passive, mood:subjonctive, tense:present, subj:[person:three, number:pl]]
+	|v [PRED:être, tense:present, mood:subjonctive, subj:[person:three, number:pl, gender:G], acomp:[number:pl, gender:G]]
+	|v [PRED:être_libre, tense:present, mood:subjonctive, subj:[person:three, number:pl, gender:G], acomp:[PRED:libre, number:pl, gender:G]]
+	|v [PRED:être_possible, tense:present, mood:subjonctive, subj:[person:three, number:pl, gender:G], acomp:[PRED:possible, number:pl, gender:G]];
+
+étaient	v [PRED:être, tense:past, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[number:pl, gender:G]]
+	|v [PRED:être_libre, tense:past, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[PRED:libre, number:pl, gender:G]]
+	|v [PRED:être_possible, tense:past, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[PRED:possible, number:pl, gender:G]];
+
+seront	v [PRED:être, tense:future, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[number:pl, gender:G]]
+	|v [PRED:être_libre, tense:future, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[PRED:libre, number:pl, gender:G]]
+	|v [PRED:être_possible, tense:future, mood:indicative, subj:[person:three, number:pl, gender:G], acomp:[PRED:possible, number:pl, gender:G]];
+
+placer v [PRED:placer, obj:[]];
+
+ai aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:one, number:sg]];
+as aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:two, number:sg]];
+a	aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:three, number:sg]]
+	|v [PRED:avoir_lieu, tense:present, mood:indicative, subj:[person:three, number:sg], obj:[FORM:"lieu"]];
+avons aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:one, number:pl]];
+avez aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:two, number:pl]];
+ont aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:three, number:pl]];
+
+avais aux [aux:avoir, diathese:active, mood:indicative, tense:pluperfect, subj:[person:one|two, number:sg]];
+avait aux [aux:avoir, diathese:active, mood:indicative, tense:pluperfect, subj:[person:three, number:sg]]
+	|v [PRED:avoir_lieu, mood:indicative, tense:pluperfect, subj:[person:three, number:sg], obj:[FORM:"lieu"]];
+avions aux [aux:avoir, diathese:active, mood:indicative, tense:pluperfect, subj:[person:one, number:pl]];
+aviez aux [aux:avoir, diathese:active, mood:indicative, tense:pluperfect, subj:[person:two, number:pl]];
+avaient aux [aux:avoir, diathese:active, mood:indicative, tense:pluperfect, subj:[person:three, number:pl]];
+
+aurais aux [aux:avoir, diathese:active, mood:conditional, tense:past, subj:[person:one|two, number:sg]];
+aurait aux [aux:avoir, diathese:active, mood:conditional, tense:past, subj:[person:three, number:sg]]
+	|v [PRED:avoir_lieu, mood:conditional, tense:past, subj:[person:three, number:sg], obj:[FORM:"lieu"]];
+aurions aux [aux:avoir, diathese:active, mood:conditional, tense:past, subj:[person:one, number:pl]];
+auriez aux [aux:avoir, diathese:active, mood:conditional, tense:past, subj:[person:two, number:pl]];
+auraient aux [aux:avoir, diathese:active, mood:conditional, tense:past, subj:[person:three, number:pl]];
+
+aurai aux [aux:avoir, diathese:active, mood:indicative, tense:future, subj:[person:one, number:sg]];
+auras aux [aux:avoir, diathese:active, mood:indicative, tense:future, subj:[person:two, number:sg]];
+aura aux [aux:avoir, diathese:active, mood:indicative, tense:future, subj:[person:three, number:sg]]
+	|v [PRED:avoir_lieu, mood:indicative, tense:future, subj:[person:three, number:sg], obj:[FORM:"lieu"]];
+aurons aux [aux:avoir, diathese:active, mood:indicative, tense:future, subj:[person:one, number:pl]];
+aurez aux [aux:avoir, diathese:active, mood:indicative, tense:future, subj:[person:two, number:pl]];
+auront aux [aux:avoir, diathese:active, mood:indicative, tense:future, subj:[person:three, number:pl]];
+
+aie aux [aux:avoir, diathese:active, mood:subjonctive, tense:past, subj:[person:one, number:sg]];
+aies aux [aux:avoir, diathese:active, mood:subjonctive, tense:past, subj:[person:two, number:sg]];
+ait aux [aux:avoir, diathese:active, mood:subjonctive, tense:past, subj:[person:three, number:sg]]
+	|v [PRED:avoir_lieu, mood:subjonctive, tense:past, subj:[person:three, number:sg], obj:[FORM:"lieu"]];
+ayons aux [aux:avoir, diathese:active, mood:subjonctive, tense:past, subj:[person:one, number:pl]];
+ayez aux [aux:avoir, diathese:active, mood:subjonctive, tense:past, subj:[person:two, number:pl]];
+aient aux [aux:avoir, diathese:active, mood:subjonctive, tense:past, subj:[person:three, number:pl]];
+
+inscrit		v [PRED:inscrire, aux:avoir, pastp:yes, gender:ms, number:sg]
+		|nc[PRED:inscrit, number:sg, gender:ms];
+inscrits	v [PRED:inscrire, aux:avoir, pastp:yes, gender:ms, number:pl]
+		|nc[PRED:inscrit, number:pl, gender:ms];
+inscrite	v [PRED:inscrire, aux:avoir, pastp:yes, gender:fm, number:sg]
+		|nc[PRED:inscrit, number:sg, gender:fm];
+inscrites	v [PRED:inscrire, aux:avoir, pastp:yes, gender:fm, number:pl]
+		|nc[PRED:inscrit, number:pl, gender:fm];
+
+libre		adj [PRED:libre, number:sg];
+libres	adj [PRED:libre, number:pl];
+
+possible		adj [PRED:possible, number:sg];
+possibles	adj [PRED:possible, number:pl];
+
+actuellement	adv[PRED:actuellement];
+
+ne	clneg [];
+pas	advneg [];
+';
+
+$pe='
+(^| )([tsjlmcnd]|qu)e ([aàeiuoyéèê])⇒$1$2\'$3
+(^| )la ([aeiuoyéèêAEIUOYÉÈÊ])⇒$1l\'$2
+(^| )([mts])a ([aeiuoyéèê])⇒$1$2on $3
+(^| )de le($| )⇒$1du$2
+(^| )de les($| )⇒$1des$2
+[.][.][.]⇒&dots;
+ *([,.;]) *⇒$1
+([?!.,;:]) *(.)⇒$1 $2
+(^|[.?!] )(.)⇒$1\\\u$2
+( *[(])⇒ (
+([)] *)⇒) 
+([0-9])[.] ([0-9])⇒$1.$2
+[.] *[.]⇒.
+&dots;⇒...
+';
+
+?>

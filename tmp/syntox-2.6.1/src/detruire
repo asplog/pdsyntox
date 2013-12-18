@@ -1,0 +1,23 @@
+ if ($2)	
+   {
+     {
+       [neg:yes];
+       [finite:no] ⊂ ↑;
+     ↓4 :=  (↑ ∪ [pastp:no,finite:no]) ;
+     }
+   }
+   else {
+     if ($6) {
+       {
+	 [neg:yes];
+	 [finite:yes] ⊂ ↑;
+       ↓4 :=  (↑ ∪ [pastp:no,finite:yes]) ;
+       }
+     }
+     else {
+       {
+	 [neg:no] ⊂ ↑;
+       ↓4 :=  (↑ ∪ [pastp:no]) ;
+       }
+     }
+   }

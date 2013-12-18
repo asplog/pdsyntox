@@ -1,0 +1,969 @@
+<?php
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='First experimentation for a Natural Language Generator';
+$subtitle='-VERSION ALPHA-';
+
+$_radioVerb=array('tense' => array('values' => array(array('present', 'tense:present'),
+						     array('past', 'tense:past'),
+						     array('future', 'tense:future')),
+				   'checked' => 0,
+				   'onchange' => '\
+if (this.value==\'tense:present\'){					\
+	document.getElementById(\'#aspect#\').style.display=\'none\';	\
+} else {								\
+	document.getElementById(\'#aspect#\').style.display=\'block\';	\
+}'),
+		  'aspect' => array('values' => array(array('accomplished', 'aspect:accomplished'),
+						      array('unaccomplished', 'aspect:unaccomplished')),
+				    'display' => 'none',
+				    'checked' => 'none'
+				    )
+		  
+		  );
+
+$_checkboxVerb=array('negative' => array('value' => 'neg:yes',
+					 'display' => 'block',
+					 'checked' => false,
+					 'disabled' => false,
+					 'onchange' => ''));
+
+$_radioNoun=array('number' => array('values' => array(array('singular', 'number:sg'),
+						      array('plural', 'number:pl')),
+				    'checked' => 0),
+		  'determiner' => array('values' => array(array('defined', 'def:yes, poss:no, dem:no'),
+							  array('undefined', 'def:no, poss:no, dem:no'),
+							  array('possessive', 'def:no, poss:yes, dem:no'),
+							  array('demonstrative', 'def:no, poss:no, dem:yes')),
+					'checked' => 1,
+					'disabled' => array(),
+					'onchange' => '\
+if (this.value==\'def:no, poss:yes, dem:no\') {				\
+	document.getElementById(\'#numberPoss#\').style.display=\'block\'; \
+	document.getElementById(\'#personPoss#\').style.display=\'block\'; \
+	document.getElementsByName(\'#numberPoss#\')[0].checked=\'true\'; } \
+else {									\
+	document.getElementById(\'#numberPoss#\').style.display=\'none\'; \
+	document.getElementById(\'#personPoss#\').style.display=\'none\'; \
+}'),
+		  'numberPoss' => array('values' => array(array('singular', 'numberposs:sg'),
+							  array('plural', 'numberposs:pl')),
+					'display' => 'none',
+					'checked' => 0),
+		  'personPoss' => array('values' => array(array('1', 'personposs:one'),
+							  array('2', 'personposs:two'),
+							  array('3', 'personposs:three')),
+					'display' => 'none',
+					'checked' => 0));
+
+$in=array();
+$in['concepts']= array('root' => array('a single event', 'succession', 'causation', 'contradiction', 'a title'),
+		       'events' => array('bug', 'to order', 'to deliver', 'to be furnished', 'to pay off - to repay'),
+		       'selfEvents' => array('what is ordered', '*who order to', '*...'),
+		       'humans' => array('me', 'you (a familiar person)', 'you (in polite society)', 'him', 'her', 'we', 'you (several persons)', 'them (masculine)', 'them (feminine)', 'somebody', 'Jean-Philippe'),
+		       'companies' => array('Martin-Duplomb'),
+		       'animals' => array('*dog', '*cat', '*shrimp'),
+		       'objects' => array('item', 'bike', 'car', 'something'),
+		       'time' => array('time'),
+		       'lap' => array('from-to', '*before', '*since'),
+		       'adjectives' => array('nice', 'fashion', 'a color'),
+		       'quantifiers' => array(),
+		       'superlatives' => array('very', 'veryFam'),
+		       'colors' => array('blue', 'yellow', 'red', 'white', 'black', 'green', 'orange', 'violet'),
+		       'modcolors' => array('dark')
+		       );
+
+$in['concepts']['animates']=array_merge($in['concepts']['humans'], $in['concepts']['animals']);
+$in['concepts']['entities']=array_merge($in['concepts']['humans'], $in['concepts']['animals'], $in['concepts']['objects']);
+$in['concepts']['personalities']=array_merge($in['concepts']['humans'], $in['concepts']['companies']);
+$in['concepts']['nominalModifiers']=array_merge($in['concepts']['adjectives'], $in['concepts']['selfEvents']);
+
+$in['defs']= array('-none-' => array('fs' => ''),
+		   'title' => array('args' => array(array('title', 'entities')),
+				    'fs' => '#title#'),
+		   'a single event' => array('args' => array(array('event', 'events')),
+					     'fs' => '#event#'),
+		   'bug' => array('fs' => 'bug'),
+		   'succession' => array('args' => array(array('firstEvent', 'discourses'), array('secondEvent', 'discourses')),
+					 'fs' => '[PRED:succ, arg1:#firstEvent#, arg2:#secondEvent#]'),
+		   'causation' => array('args' => array(array('cause', 'discourses'), array('effect', 'discourses')),
+					'fs' => '[PRED:conséquence, arg1:#cause#, arg2:#effect#]'),
+		   'contradiction' => array('args' => array(array('proposition1', 'discourses'), array('proposition2', 'discourses')),
+					    'fs' => '[PRED:contradiction, arg1:#proposition1#, arg2:#proposition2#]'),
+		   'a color' => array('args' => array(array('color', 'colors')),
+				      'fs' => '#color#'),
+		   'very' => array('fs' => '[PRED:très]'),
+		   'veryFam' => array('fs' => '[PRED:tout_plein]'),
+		   'time' => array('fs' => '[FORM:#txt#, time:date]',
+				   'date' => array('txt')),
+		   'from-to' => array('fs' => '[PRED:from_to, arg1:[FORM:#from#], arg2:[FORM:#to#], time:lap]',
+				      'date' => array('from', 'to')),
+		   'nice' => array('fs' => '[PRED:joli, mod:(#superlative#, #comparative#)]',
+				   'mods' => array(array('superlative', 'superlatives'), array('comparative', 'comparatives'))),
+		   'fashion' => array('fs' => '[PRED:à_la_mode, mod:(#superlative#)]',
+				      'mods' => array(array('superlative', 'superlatives'))),
+		   'blue' => array('fs' => '[PRED:bleu, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'yellow' => array('fs' => '[PRED:jaune, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'red' => array('fs' => '[PRED:rouge, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'orange' => array('fs' => '[PRED:orange, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'green' => array('fs' => '[PRED:vert, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'violet' => array('fs' => '[PRED:violet, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'black' => array('fs' => '[PRED:noir, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'white' => array('fs' => '[PRED:blanc, mod:(#modcolors#)]',
+				   'mods' => array(array('modcolors', 'modcolors'))),
+		   'dark' => array('fs' => '[PRED:foncé]'),
+		   'me' => array('fs' => '[PRED:pro, person:one, number:sg]'),
+		   'you (a familiar person)' => array('fs' => '[PRED:pro, person:two, number:sg]'),
+		   'you (in polite society)' => array('fs' => '[PRED:pro, person:two, number:pl]'),
+		   'him' => array('fs' => '[PRED:pro, person:three, number:sg, gender:ms]'),
+		   'her' => array('fs' => '[PRED:pro, person:three, number:sg, gender:fm]'),
+		   'we' => array('fs' => '[PRED:pro, person:one, number:pl]'),
+		   'you (several persons)' => array('fs' => '[PRED:pro, person:two, number:pl]'),
+		   'them (masculine)' => array('fs' => '[PRED:pro, person:three, number:pl, gender:ms]'),
+		   'them (feminine)' => array('fs' => '[PRED:pro, person:three, number:pl, gender:fm]'),
+		   'somebody' => array('textarea' => array('text'),
+				       'fs' => '[FORM:"#text#", number:sg, person:three]'),
+		   'Jean-Philippe' => array('fs' => '[FORM:"Jean-Philippe", number:sg, person:three, gender:ms]'),
+		   'Martin-Duplomb' => array('fs' => '[FORM:"Martin-Duplomb", number:sg, person:three, gender:ms]'),
+		   'item' => array('radios' => $_radioNoun,
+				   'fs' => '[PRED:article, #number#, #determiner#, #numberPoss#, #personPoss#]'),
+		   'bike' => array('fs' => '[PRED:vélo, mod:(#qualifier1#, #qualifier2#, #qualifier3#), #number#, #determiner#, #numberPoss#, #personPoss#]',
+				   'radios' => $_radioNoun,
+				   'mods' => array(array('qualifier1', 'nominalModifiers'), array('qualifier2', 'nominalModifiers'), array('qualifier3', 'nominalModifiers'))),
+		   'car' => array('fs' => '[PRED:voiture, mod:(#qualifier1#, #qualifier2#, #qualifier3#), #number#, #determiner#, #numberPoss#, #personPoss#]',
+				   'radios' => $_radioNoun,
+				   'mods' => array(array('qualifier1', 'nominalModifiers'), array('qualifier2', 'nominalModifiers'), array('qualifier3', 'nominalModifiers'))),
+		   'dog' => array('radios' => $_radioNoun,
+				  'fs' => '[PRED:chien, #number#, #determiner#, #numberPoss#, #personPoss#]'),
+		   'cat' => array('radios' => $_radioNoun,
+				  'fs' => '[PRED:chat, #number#, #determiner#, #numberPoss#, #personPoss#]'),
+		   'shrimp' => array('radios' => $_radioNoun,
+				     'fs' => '[PRED:crevette, #number#, #determiner#, #numberPoss#, #personPoss#]'),
+		   'something' => array('textarea' => array('text'),
+					'fs' => '[FORM:"#text#", number:sg, person:three]'),
+		   'to order' => array('args' => array(array('orderer', 'personalities'), array('object', 'objects'), array('recipient', 'personalities')),
+				       'mods' => array(array('time', 'time'), array('lap', 'lap')),
+				       'radios' => $_radioVerb,
+				       'checkboxes' => $_checkboxVerb,
+				       'fs' => '[PRED:commander, modS:(#time#, #lap#), subj:#orderer#, obj:#object#, à_obj:#recipient#, diathesis:active, #tense#, #aspect#, #negative#]'),
+		   'what is ordered' => array('args' => array(array('orderer', 'personalities'), array('recipient', 'personalities')),
+					      'mods' => array(array('time', 'time'), array('lap', 'lap')),
+					      'radios' => $_radioVerb,
+					      'checkboxes' => $_checkboxVerb,
+					      'fs' => '[PRED:commander, modS:(#time#, #lap#), subj:#orderer#, à_obj:#recipient#, diathesis:active, #tense#, #aspect#, #negative#]'),
+		   'to deliver' => array('args' => array(array('agent', 'personalities'), array('recipient', 'personalities')),
+					 'radios' => $_radioVerb,
+					 'checkboxes' => $_checkboxVerb,
+					 'fs' => '[PRED:livrer, subj:#agent#, obj:#object#, à_obj:#recipient#, diathesis:active, #tense#, #aspect#, #negative#]'),
+		   'to be furnished' => array('args' => array(array('who', 'personalities'), array('agent', 'personalities')),
+					      'radios' => $_radioVerb,
+					      'checkboxes' => $_checkboxVerb,
+					      'fs' => '[PRED:livrer, subj:#who#, par_obj:#agent#, diathesis:passive, #tense#, #aspect#, #negative#]'),
+		   'to pay off - to repay' => array('args' => array(array('agent', 'personalities'), array('recipient', 'personalities')),
+						    'radios' => $_radioVerb,
+						    'checkboxes' => $_checkboxVerb,
+						    'fs' => '[PRED:rembourser, subj:#agent#, obj:#recipient#, diathesis:active, #tense#, #aspect#, #negative#]')
+		   );
+
+$gr='
+Axiom → T dot
+{
+	↓1 := ↑ ∪ [mood:indicative];
+};
+
+T → T dot br T
+{
+	[PRED:succ, arg1:Arg1, arg2:Arg2];
+	↓1 := Arg1 ∪ [mood:indicative];
+	↓4 := Arg2 ∪ [mood:indicative];
+};
+
+T → T comma cependant T
+{
+	[PRED:contradiction, arg1:Arg1, arg2:Arg2];
+	↓1 := Arg1 ∪ [mood:indicative];
+	↓4 := Arg2 ∪ [mood:indicative];
+};
+
+T → T dot paragraph T
+{
+	[PRED:paragraph, arg1:Arg1, arg2:Arg2];
+	↓1 := Arg1 ∪ [mood:indicative];
+	↓4 := Arg2 ∪ [mood:indicative];
+};
+
+T → T comma parConséquent T
+{
+	[PRED:conséquence, arg1:Arg1, arg2:Arg2];
+	↓1 := Arg1 ∪ [mood:indicative];
+	↓4 := Arg2 ∪ [mood:indicative];
+};
+
+T → siCependant T comma alors T
+{
+	[PRED:cependant, arg1:Arg1, arg2:Arg2];
+	↓2 := Arg1 ∪ [mood:indicative];
+	↓5 := Arg2 ∪ [mood:indicative];
+};
+
+T → S
+{
+	[modS:NIL];
+	↓1 := ↑;
+};
+
+T → NP
+{
+	[modS:NIL];
+	↓1 := ↑ ∪ [det:yes];
+};
+
+T → time comma T
+{
+	[modS:<Head::Tail>, Rest];
+	↓1 := Head ∪ [time:date];
+	↓3 := Rest ∪ [mod:Tail];
+};
+
+T → T lap
+{
+	[modS:<Head::Tail>, Rest];
+	↓1 := Rest ∪ [mod:Tail];
+	↓2 := Head ∪ [time:lap];
+};
+
+lap →  de time à time
+{
+	[PRED:from_to, arg1:A, arg2:B];
+	↓2 := A;
+	↓4 := B;
+};
+
+S → NP|cln|Empty VP
+{
+	[subj:S, Rest];
+	↓1 := S ∪ [strong:no];
+	SyntS := ⇓1 ∪ [det:yes];
+	↓2 := Rest ∪ [subj:SyntS];
+};
+
+S → merciDe VP
+{
+	[vcomp:VComp];
+	↓2 := VComp ∪ [finite:no];
+};
+
+NP → (det) N2
+{
+    order ↓2 ↓1 ;
+    ↓2 := ↑;
+    if ($1) {
+       ↓1 := ↑ ∪ ⇓2;
+       ⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:three, det:yes];
+    } else {
+       ⇑ := ↑ ∪ ⇓2 ∪ [person:three, det:no];
+    }
+};
+
+NP → pn
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+NP → pro
+{
+	[strong:yes] ⊂ ↑;
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N → nc
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+NP → constantNoun
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N2 → N1 RP
+{
+	[mod:<Head::Tail>, Rest];
+	[number:Nh, gender:Gh] ⊂ ↑;
+	// Passage des traits communs entre la relative et le nom
+	↓1 := [Rest, mod:Tail];
+	[number:Ns, gender:Gs] ⊂ ⇓1;
+	↓2 := Head ∪ [number:Nh, gender:Gh] ∪ [number:Ns, gender:Gs];
+	⇑ := Rest ∪ ⇓1;
+};
+
+N2 → N1 NP
+{
+	[mod:<Head::Tail>, X];
+	↓2 := Head;
+	↓1 := [X, mod:Tail];
+	⇑ := X ∪ ⇓1;
+};
+
+N2 → N1 PP
+{
+	[mod:<Head::Tail>, X];
+	↓2 := Head;
+	↓1 := [X, mod:Tail];
+	⇑ := X ∪ ⇓1;
+};
+
+N2 → N1
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N1 → A N1
+{
+	[mod:<Elt::Rest>, X];
+	[number:N, gender:G] ⊂ ↑;
+	↓1 := Elt ∪ [number:N, gender:G];
+	[number:N1, gender:G1] ⊂ ⇓1;
+	test [pre:yes, post:no] ∪ ⇓1;
+	↓2 := [X, mod:Rest] ∪ [number:N1, gender:G1];
+	⇑ := X ∪ ⇓2 ∪ [number:N1, gender:G1];
+};
+
+N1 → N1 A
+{
+	[mod:<First::Rest>, X];
+	order ↓2 ↓1;
+	[number:N, gender:G] ⊂ ↑;
+	↓2 := First ∪ [number:N, gender:G];
+	[number:N2, gender:G2] ⊂ ⇓2;
+	test [pre:no, post:yes] ∪ ⇓2;
+	↓1 := [X, mod:Rest] ∪ [number:N2, gender:G2];
+	⇑ := X ∪ ⇓1 ∪ [number:N2, gender:G2];
+};
+
+N1 → N
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+A → adj
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+A → advA A
+{
+	[mod:<First::Rest>, X];
+	↓1 := First ∪ [pre:yes, post:no];
+	↓2 := [X, mod:Rest];
+	⇑ := X ∪ ⇓2;
+};
+
+A → A advA
+{
+	[mod:<First::Rest>, X];
+	[number:N, gender:G] ⊂ ↑;
+	↓1 := [X, mod:Rest];
+	↓2 := First ∪ [pre:no, post:yes];
+	[number:N, gender:G] ⊂ ⇓1;
+	⇑ := X ∪ [number:N, gender:G, post:yes, pre:no];
+};
+
+VP → VP Empty
+{
+	[obj:OBJ, obl:NIL];
+	[obj:OBJ, X] ⊂ ↑;
+	[obj:OBJSynt] ⊂ ⇓1;
+	↓1 := X ∪ [objExtr:OBJ];
+	↓2 := OBJ ∪ OBJSynt;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP NP
+{
+	[obj:[PRED:P], Rest];
+	[obj:Obj];
+	test P ≠ pro; 
+	↓1 := Rest;
+	↓2 := Obj ∪ [det:yes];
+	⇑ := ⇓1;
+};
+
+VP → VP PP
+{
+	[de_obj:[PRED:P], Rest];
+	[de_obj:DeObj];
+	test P ≠ pro; 
+	↓1 := Rest;
+	↓2 := DeObj ∪ [det:yes, pcas:de];
+	⇑ := ⇓1;
+};
+
+VP → VP PP
+{
+	[à_obj:[PRED:P], Rest];
+	[à_obj:DeObj];
+	test P ≠ pro; 
+	↓1 := Rest;
+	↓2 := DeObj ∪ [det:yes, pcas:à];
+	⇑ := ⇓1;
+};
+
+VP → VP PP
+{
+	[par_obj:[PRED:P], Rest];
+	[par_obj:ParObj];
+	//test P ≠ pro; 
+	↓1 := Rest;
+	↓2 := ParObj ∪ [pcas:par];
+	⇑ := ⇓1;
+};
+
+VP → VP SComp
+{
+	[scomp:SComp, Rest];
+	↓1 := Rest;
+	[scomp:SCompSynt] ⊂ ⇓1;
+	↓2 := SComp ∪ SCompSynt;
+	⇑ := ⇓1;
+};
+
+VP → VP VComp
+{
+	[vcomp:VComp, Rest];
+	↓1 := Rest;
+	[vcomp:VCompSynt] ⊂ ⇓1;
+	↓2 := VComp ∪ VCompSynt;
+	⇑ := ⇓1;
+};
+
+VP → V (NP)
+{
+    [obj:NIL, scomp:NIL, de_obj:NIL, par_obj:NIL];
+    [objC:Obj, X] ⊂ ↑;
+    ↓1 := X;
+    [objC:ObjSynt] ⊂ ⇓1;
+    if ($2) {
+        ↓2 := ObjSynt;
+    } else {
+	test ¬ObjSynt;
+    }
+    ⇑ := ⇓1;
+
+};
+
+VP → V
+{
+	[obj:[PRED:pro], scomp:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+// passive
+V → (clneg) CLITICS aux (ADVV) (advneg) v
+{
+	[X, subj:S];
+	[tense:T, aspect:A, mood:M, diathesis:passive] ⊂ ↑;
+	[number:N, gender:G] ⊂ S;
+	order ↓6 ↓3 ↓2 ↓1 ↓4 ↓5;
+	↓6 := X ∪ [aux:avoir, pastp:yes, gender:G, number:N];
+	⇑ := ⇓6;
+        ↓3 := [aux:être, diathesis:passive, tense:T, aspect:A, mood:M, subj:S, finite:yes];
+	if ($4) {
+		[modV:ModV];
+		↓4 := [modV:ModV];
+	} else {
+		[modV:NIL];
+	}
+	test ⇓5 ⇔ ⇓1;
+	if ($5) {
+		[neg:yes];
+	} else {
+		[neg:no] ⊂ ↑;
+	}
+};
+
+// compound passive
+V → (clneg) CLITICS aux (ADVV) (advneg) été v
+{
+	[X, subj:S];
+	[tense:T, aspect:A, mood:M, diathesis:passive] ⊂ ↑;
+	[number:N, gender:G] ⊂ S;
+	order ↓6 ↓7 ↓3 ↓2 ↓1 ↓4 ↓5;
+	↓7 := X ∪ [aux:avoir, pastp:yes, gender:G, number:N];
+	⇑ := ⇓7;
+        ↓3 := [aux:avoir, tense:T, aspect:A, mood:M, subj:S, finite:yes];
+	if ($4) {
+		[modV:ModV];
+		↓4 := [modV:ModV];
+	} else {
+		[modV:NIL];
+	}
+	test ⇓5 ⇔ ⇓1;
+	if ($5) {
+		[neg:yes];
+	} else {
+		[neg:no] ⊂ ↑;
+	}
+};
+
+// active
+// manque verbes intransitifs
+V → (clneg) CLITICS aux (ADVV) (advneg) v
+{
+	[X, subj:S];
+	[tense:T, aspect:A, mood:M, diathesis:active] ⊂ ↑;
+	if ($4) {
+		[modV:ModV];
+		↓4 := [modV:ModV];
+	} else {
+		[modV:NIL];
+	}
+	test ⇓5 ⇔ ⇓1;
+	if ($5) {
+		[neg:yes];
+	} else {
+		[neg:no] ⊂ ↑;
+	}
+	// Si l&apos;objet est extrait, il s&apos;accorde
+	// en genre et en nombre avec le participe
+	[objExtr:OBJEXTR] ⊂ ↑;
+        ↓3 := [tense:T, aspect:A, mood:M, subj:S, finite:yes];
+	[aux:AUX] ⊂ ⇓3;
+	if (OBJEXTR) {
+		[objExtr:[gender:G, number:N]] ⊂ ↑;
+		↓6 := X ∪ [aux:AUX, pastp:yes, gender:G, number:N];
+	} 
+	else {
+	     if (AUX = avoir)
+	     	↓6 := X ∪ [aux:avoir, pastp:yes, gender:ms, number:sg];
+	     else {
+		[number:N, gender:G] ⊂ S;
+		↓6 := X ∪ [aux:être, pastp:yes, gender:G, number:N];
+	     }
+	}
+	⇑ := ⇓6;
+};
+
+V → (clneg) (advneg) CLITICS v (ADVV) (advneg)
+{
+	order ↓1 ↓2 ↓3 ↓5 ↓6 ↓4; 
+
+	[diathesis:active] ⊂ ↑;
+	test (⇓2 ∨ ⇓6) ⇔ ⇓1;
+	test ¬ (⇓2 ∧ ⇓6);
+	if ($5) {
+		[modV:ModV];
+		↓5 := [modV:ModV];
+	} else {
+		[modV:NIL];
+	}
+	if ($2) {
+		[neg:yes];
+		[finite:no] ⊂ ↑;
+		↓4 := ↑ ∪ [pastp:no, finite:no];
+	} else if ($6) {
+		[neg:yes];
+		[finite:yes] ⊂ ↑;
+		↓4 := ↑ ∪ [pastp:no, finite:yes];
+	} else {
+		[neg:no] ⊂ ↑;
+		↓4 := ↑ ∪ [pastp:no];
+	}
+	⇑ := ⇓4;
+};
+
+ADVV → adv ADVV
+{
+	[modV:<Head::Tail>];
+        ↓1 := Head;
+        ↓2 := [modV:Tail];
+};
+
+ADVV →
+{
+	[modV:NIL];
+};
+
+CLITICS → (cld) (cla) (cld)
+{
+	test ¬(⇓1 ∧ ⇓3);
+	if ($1) {
+		[à_obj:[PRED:pro, person:one|two]];
+		[à_obj:AObj];
+        	↓1 := AObj;
+	} 
+	else if ($3) {
+		[à_obj:[PRED:pro, person:three]];
+		[à_obj:AObj];
+        	↓3 := AObj;
+	} else {
+		[à_obj:NIL];
+	}
+	if ($2) {
+		[obj:[PRED:pro]];
+		[obj:Obj];
+        	↓2 := Obj;
+	} else {
+		[obj:NIL];
+	}
+};
+
+SComp → csu T
+{
+	↓1 := ↑;
+       	↓2 := ↑;
+	⇑ := ⇓1 ∪ ⇓2;
+};
+
+VComp → VP
+{
+	↓1 := ↑ ∪ [finite:yes];
+       	⇑ := ⇓1;
+};
+
+PP → prep NP
+{
+	↓1 := ↑;
+       	↓2 := ↑;
+	⇑ := ⇓1 ∪ ⇓2;
+};
+
+RP → prel S
+{
+	[number:N, gender:G, REST] ⊂ ↑;
+	↓1 := [];
+	[fct:FCT] ⊂ ⇓1;
+	↓2 := REST ∪ [FCT:[PRED:none, number:N, gender:G]] ∪ [mood:indicative];
+};
+
+Empty →
+{
+	[PRED:none];
+};
+
+';
+
+$lx='
+IDENTITY constantNoun;
+IDENTITY time;
+
+&quot;∅&quot; empty [];
+
+&quot;&lt;P&gt;&quot;	paragraph [];
+&quot;&lt;BR&gt;&quot;	br [];
+&quot;.&quot;	dot [];
+&quot;,&quot;	comma [];
+&quot;par conséquent&quot;	parConséquent [];
+&quot;cependant&quot;	cependant [];
+&quot;si cependant&quot;	siCependant [];
+&quot;alors&quot;	alors [];
+&quot;merci de&quot;	merciDe [];
+été été[];
+
+je	cln [PRED:pro, number:sg, person:one];
+tu	cln [PRED:pro, number:sg, person:two];
+il	cln [PRED:pro, number:sg, person:three, gender:ms];
+elle	cln [PRED:pro, number:sg, person:three, gender:fm]
+	|pro[PRED:pro, number:sg, person:three, gender:fm];
+nous	cln [PRED:pro, number:pl, person:one]
+	|pro [PRED:pro, number:pl, person:one];
+vous	cln [PRED:pro, number:pl, person:two]
+	|pro [PRED:pro, number:pl, person:two];
+ils	cln [PRED:pro, number:pl, person:three, gender:ms];
+elles	cln [PRED:pro, number:pl, person:three, gender:fm]
+	|pro [PRED:pro, number:pl, person:three, gender:fm];
+
+moi	pro[PRED:pro, number:sg, person:one];
+toi	pro[PRED:pro, number:sg, person:two];
+eux	pro[PRED:pro, number:pl, person:three, gender:ms];
+
+me	cla [PRED:pro, number:sg, person:one]
+	|cld [PRED:pro, number:sg, person:one];
+
+te	cla [PRED:pro, number:sg, person:two]
+	|cld [PRED:pro, number:sg, person:two];
+
+le	cla [PRED:pro, gender:ms, number:sg, person:three]
+	|det [number:sg, gender:ms, def:yes, dem:no, poss:no];
+
+la	cla [PRED:pro, gender:fm, number:sg, person:three]
+	|det [number:sg, gender:fm, def:yes, dem:no, poss:no];
+
+les	cla [PRED:pro, number:pl, person:three]
+	|det [number:pl, def:yes, dem:no, poss:no];
+
+lui	cld [PRED:pro, number:sg, person:three]
+	|pro[PRED:pro, number:sg, person:three, gender:ms];
+
+nous	cla [PRED:pro, number:pl, person:one]
+	|cld [PRED:pro, number:pl, person:one];
+vous	cla [PRED:pro, number:pl, person:two]
+	|cld [PRED:pro, number:pl, person:two];
+leur	cld [PRED:pro, number:pl, person:three]
+	|det [number:sg, def:no, poss:yes, dem:no, personposs:three, numberposs:pl];
+
+un	det [number:sg, gender:ms, def:no, dem:no, poss:no];
+une	det [number:sg, gender:fm, def:no, dem:no, poss:no];
+des	det [number:pl, def:no, dem:no, poss:no];
+
+mon	det [number:sg, gender:ms, def:no, poss:yes, dem:no, personposs:one, numberposs:sg];
+ma	det [number:sg, gender:fm, def:no, poss:yes, dem:no, personposs:one, numberposs:sg];
+mes	det [number:pl, def:no, poss:yes, dem:no, personposs:one, numberposs:sg];
+ton	det [number:sg, gender:ms, def:no, poss:yes, dem:no, personposs:two, numberposs:sg];
+ta	det [number:sg, gender:fm, def:no, poss:yes, dem:no, personposs:two, numberposs:sg];
+tes	det [number:pl, def:no, poss:yes, dem:no, personposs:two, numberposs:sg];
+son	det [number:sg, gender:ms, def:no, poss:yes, dem:no, personposs:three, numberposs:sg];
+sa	det [number:sg, gender:fm, def:no, poss:yes, dem:no, personposs:three, numberposs:sg];
+ses	det [number:pl, def:no, poss:yes, dem:no, personposs:three, numberposs:sg];
+notre	det [number:sg, def:no, poss:yes, dem:no, personposs:one, numberposs:pl];
+nos	det [number:pl, def:no, poss:yes, dem:no, personposs:one, numberposs:pl];
+votre	det [number:sg, def:no, poss:yes, dem:no, personposs:two, numberposs:pl];
+vos	det [number:pl, def:no, poss:yes, dem:no, personposs:two, numberposs:pl];
+leurs	det [number:pl, def:no, poss:yes, dem:no, personposs:three, numberposs:pl];
+
+ce	det [number:sg, gender:ms, def:no, poss:no, dem:yes];
+ces	det [number:pl, def:no, poss:no, dem:yes];
+cette	det [number:sg, gender:fm, def:no, poss:no, dem:yes];
+
+chat  nc [PRED:chat, number:sg, gender:ms];
+chats  nc [PRED:chat, number:pl, gender:ms];
+
+chien  nc [PRED:chien, number:sg, gender:ms];
+chiens  nc [PRED:chien, number:pl, gender:ms];
+
+crevette  nc [PRED:crevette, number:sg, gender:fm];
+crevettes  nc [PRED:crevette, number:pl, gender:fm];
+
+article  nc [PRED:article, number:sg, gender:ms];
+articles  nc [PRED:article, number:pl, gender:ms];
+
+vélo  nc [PRED:vélo, number:sg, gender:ms];
+vélos  nc [PRED:vélo, number:pl, gender:ms];
+
+voiture  nc [PRED:voiture, number:sg, gender:fm];
+voitures  nc [PRED:voiture, number:pl, gender:fm];
+
+courrier  nc [PRED:courrier, number:sg, gender:ms];
+courriers  nc [PRED:courrier, number:pl, gender:ms];
+
+livraison  nc [PRED:livraison, number:sg, gender:fm];
+livraisons  nc [PRED:livraison, number:pl, gender:fm];
+
+compte  nc [PRED:compte, number:sg, gender:ms];
+comptes  nc [PRED:compte, number:pl, gender:ms];
+
+joli adj [PRED:joli, number:sg, gender:ms, pre:yes];
+jolis adj [PRED:joli, number:pl, gender:ms, pre:yes];
+jolie adj [PRED:joli, number:sg, gender:fm, pre:yes];
+jolies adj [PRED:joli, number:pl, gender:fm, pre:yes];
+
+bleu adj [PRED:bleu, number:sg, gender:ms, post:yes];
+bleus adj [PRED:bleu, number:pl, gender:ms, post:yes];
+bleue adj [PRED:bleu, number:sg, gender:fm, post:yes];
+bleues adj [PRED:bleu, number:pl, gender:fm, post:yes];
+
+jaune adj [PRED:jaune, number:sg, post:yes];
+jaunes adj [PRED:jaune, number:pl, post:yes];
+
+rouge adj [PRED:rouge, number:sg, post:yes];
+rouges adj [PRED:rouge, number:pl, post:yes];
+
+orange adj [PRED:orange, number:sg, post:yes];
+oranges adj [PRED:orange, number:pl, post:yes];
+
+vert adj [PRED:vert, number:sg, gender:ms, post:yes];
+verts adj [PRED:vert, number:pl, gender:ms, post:yes];
+verte adj [PRED:vert, number:sg, gender:fm, post:yes];
+vertes adj [PRED:vert, number:pl, gender:fm, post:yes];
+
+violet adj [PRED:violet, number:sg, gender:ms, post:yes];
+violets adj [PRED:violet, number:pl, gender:ms, post:yes];
+violette adj [PRED:violet, number:sg, gender:fm, post:yes];
+violettes adj [PRED:violet, number:pl, gender:fm, post:yes];
+
+blanc adj [PRED:blanc, number:sg, gender:ms, post:yes];
+blancs adj [PRED:blanc, number:pl, gender:ms, post:yes];
+blanche adj [PRED:blanc, number:sg, gender:fm, post:yes];
+blanches adj [PRED:blanc, number:pl, gender:fm, post:yes];
+
+noir adj [PRED:noir, number:sg, gender:ms, post:yes];
+noirs adj [PRED:noir, number:pl, gender:ms, post:yes];
+noire adj [PRED:noir, number:sg, gender:fm, post:yes];
+noires adj [PRED:noir, number:pl, gender:fm, post:yes];
+
+&quot;à la mode&quot; adj [PRED:à_la_mode, post:yes];
+
+très	advA [PRED:très, pre:yes];
+&quot;tout plein&quot;	advA [PRED:tout_plein, post:yes];
+foncé	advA [PRED:foncé, post:yes];
+
+suis	aux [aux:être, diathesis:passive, finite:yes, mood:indicative, tense:present, subj:[person:one, number:sg]];
+es	aux [aux:être, diathesis:passive, finite:yes, mood:indicative, tense:present, subj:[person:two, number:sg]];
+est	aux [aux:être, diathesis:passive, finite:yes, mood:indicative, tense:present, subj:[person:three, number:sg]];
+sommes	aux [aux:être, diathesis:passive, finite:yes, mood:indicative, tense:present, subj:[person:one, number:pl]];
+êtes	aux [aux:être, diathesis:passive, finite:yes, mood:indicative, tense:present, subj:[person:two, number:pl]];
+sont	aux [aux:être, diathesis:passive, finite:yes, mood:indicative, tense:present, subj:[person:three, number:pl]];
+
+suis aux [aux:être, diathesis:active, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:one, number:sg]];
+es aux [aux:être, diathesis:active, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:two, number:sg]];
+est	aux [aux:être, diathesis:active, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:three, number:sg]];
+sommes aux [aux:être, diathesis:active, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:one, number:pl]];
+êtes aux [aux:être, diathesis:active, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:two, number:pl]];
+sont aux [aux:être, diathesis:active, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:three, number:pl]];
+
+ai aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:one, number:sg]];
+as aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:two, number:sg]];
+a	aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:three, number:sg]];
+avons aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:one, number:pl]];
+avez aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:two, number:pl]];
+ont aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:accomplished, subj:[person:three, number:pl]];
+
+////avais aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:unaccomplished, subj:[person:one|two, number:sg]];
+////avait aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:unaccomplished, subj:[person:three, number:sg]];
+////avions aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:unaccomplished, subj:[person:one, number:pl]];
+////aviez aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:unaccomplished, subj:[person:two, number:pl]];
+////avaient aux [aux:avoir, finite:yes, mood:indicative, tense:past, aspect:unaccomplished, subj:[person:three, number:pl]];
+
+aurais aux [aux:avoir, finite:yes, mood:conditional, tense:past, subj:[person:one|two, number:sg]];
+aurait aux [aux:avoir, finite:yes, mood:conditional, tense:past, subj:[person:three, number:sg]];
+aurions aux [aux:avoir, finite:yes, mood:conditional, tense:past, subj:[person:one, number:pl]];
+auriez aux [aux:avoir, finite:yes, mood:conditional, tense:past, subj:[person:two, number:pl]];
+auraient aux [aux:avoir, finite:yes, mood:conditional, tense:past, subj:[person:three, number:pl]];
+
+aurai aux [aux:avoir, finite:yes, mood:indicative, tense:future, aspect:accomplished, subj:[person:one, number:sg]];
+auras aux [aux:avoir, finite:yes, mood:indicative, tense:future, aspect:accomplished, subj:[person:two, number:sg]];
+aura aux [aux:avoir, finite:yes, mood:indicative, tense:future, aspect:accomplished, subj:[person:three, number:sg]];
+aurons aux [aux:avoir, finite:yes, mood:indicative, tense:future, aspect:accomplished, subj:[person:one, number:pl]];
+aurez aux [aux:avoir, finite:yes, mood:indicative, tense:future, aspect:accomplished, subj:[person:two, number:pl]];
+auront aux [aux:avoir, finite:yes, mood:indicative, tense:future, aspect:accomplished, subj:[person:three, number:pl]];
+
+aie aux [aux:avoir, finite:yes, mood:subjonctive, tense:past, subj:[person:one, number:sg]];
+aies aux [aux:avoir, finite:yes, mood:subjonctive, tense:past, subj:[person:two, number:sg]];
+ait aux [aux:avoir, finite:yes, mood:subjonctive, tense:past, subj:[person:three, number:sg]];
+ayons aux [aux:avoir, finite:yes, mood:subjonctive, tense:past, subj:[person:one, number:pl]];
+ayez aux [aux:avoir, finite:yes, mood:subjonctive, tense:past, subj:[person:two, number:pl]];
+aient aux [aux:avoir, finite:yes, mood:subjonctive, tense:past, subj:[person:three, number:pl]];
+
+commande v[PRED:commander, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+commandes v[PRED:commander, pastp:no, subj:[person:two, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+commandons v[PRED:commander, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:indicative];
+commandez v[PRED:commander, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:indicative];
+commandent v[PRED:commander, pastp:no, subj:[person:three, number:pl], tense:present, finite:yes, mood:indicative];
+
+commandais v[PRED:commander, pastp:no, subj:[person:one|two, number:sg], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+commandait v[PRED:commander, pastp:no, subj:[person:three, number:sg], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+commandions v[PRED:commander, pastp:no, subj:[person:one, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+commandiez v[PRED:commander, pastp:no, subj:[person:two, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+commandaient v[PRED:commander, pastp:no, subj:[person:three, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+
+commanderai v[PRED:commander, pastp:no, subj:[person:one, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+commanderas v[PRED:commander, pastp:no, subj:[person:two, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+commandera v[PRED:commander, pastp:no, subj:[person:three, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+commanderons v[PRED:commander, pastp:no, subj:[person:one, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+commanderez v[PRED:commander, pastp:no, subj:[person:two, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+commanderont v[PRED:commander, pastp:no, subj:[person:three, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+
+commandé v[PRED:commander, aux:avoir, pastp:yes, gender:ms, number:sg];
+commandés v[PRED:commander, aux:avoir, pastp:yes, gender:ms, number:pl];
+commandée v[PRED:commander, aux:avoir, pastp:yes, gender:fm, number:sg];
+commandées v[PRED:commander, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+livre v[PRED:livrer, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+livres v[PRED:livrer, pastp:no, subj:[person:two, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+livrons v[PRED:livrer, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:indicative];
+livrez v[PRED:livrer, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:indicative];
+livrent v[PRED:livrer, pastp:no, subj:[person:three, number:pl], tense:present, finite:yes, mood:indicative];
+
+livrais v[PRED:livrer, pastp:no, subj:[person:one|two, number:sg], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+livrait v[PRED:livrer, pastp:no, subj:[person:three, number:sg], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+livrions v[PRED:livrer, pastp:no, subj:[person:one, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+livriez v[PRED:livrer, pastp:no, subj:[person:two, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+livraient v[PRED:livrer, pastp:no, subj:[person:three, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+
+livrerai v[PRED:livrer, pastp:no, subj:[person:one, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+livreras v[PRED:livrer, pastp:no, subj:[person:two, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+livrera v[PRED:livrer, pastp:no, subj:[person:three, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+livrerons v[PRED:livrer, pastp:no, subj:[person:one, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+livrerez v[PRED:livrer, pastp:no, subj:[person:two, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+livreront v[PRED:livrer, pastp:no, subj:[person:three, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+
+livré v[PRED:livrer, aux:avoir, pastp:yes, gender:ms, number:sg];
+livrés v[PRED:livrer, aux:avoir, pastp:yes, gender:ms, number:pl];
+livrée v[PRED:livrer, aux:avoir, pastp:yes, gender:fm, number:sg];
+livrées v[PRED:livrer, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+rembourse v[PRED:rembourser, pastp:no, subj:[person:one|three, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+rembourses v[PRED:rembourser, pastp:no, subj:[person:two, number:sg], tense:present, finite:yes, mood:indicative|subjunctive];
+remboursons v[PRED:rembourser, pastp:no, subj:[person:one, number:pl], tense:present, finite:yes, mood:indicative];
+remboursez v[PRED:rembourser, pastp:no, subj:[person:two, number:pl], tense:present, finite:yes, mood:indicative];
+remboursent v[PRED:rembourser, pastp:no, subj:[person:three, number:pl], tense:present, finite:yes, mood:indicative];
+
+remboursais v[PRED:rembourser, pastp:no, subj:[person:one|two, number:sg], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+remboursait v[PRED:rembourser, pastp:no, subj:[person:three, number:sg], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+remboursions v[PRED:rembourser, pastp:no, subj:[person:one, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+remboursiez v[PRED:rembourser, pastp:no, subj:[person:two, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+remboursaient v[PRED:rembourser, pastp:no, subj:[person:three, number:pl], tense:past, aspect:unaccomplished, finite:yes, mood:indicative];
+
+rembourserai v[PRED:rembourser, pastp:no, subj:[person:one, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+rembourseras v[PRED:rembourser, pastp:no, subj:[person:two, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+remboursera v[PRED:rembourser, pastp:no, subj:[person:three, number:sg], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+rembourserons v[PRED:rembourser, pastp:no, subj:[person:one, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+rembourserez v[PRED:rembourser, pastp:no, subj:[person:two, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+rembourseront v[PRED:rembourser, pastp:no, subj:[person:three, number:pl], tense:future, aspect:unaccomplished, finite:yes, mood:indicative];
+
+remboursé v[PRED:rembourser, aux:avoir, pastp:yes, gender:ms, number:sg];
+remboursés v[PRED:rembourser, aux:avoir, pastp:yes, gender:ms, number:pl];
+remboursée v[PRED:rembourser, aux:avoir, pastp:yes, gender:fm, number:sg];
+remboursées v[PRED:rembourser, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+ne	clneg[];
+pas	advneg[];
+
+que	csu[form:aff];
+si	csu[form:int];
+
+toujours	adv[PRED:pas_encore]
+		|adv[PRED:toujours];
+
+de prep[pcas:de]|de[];
+à prep[pcas:à]|à[];
+par prep[pcas:par];
+pour prep[pcas:pour];
+sur prep[pcas:sur];
+avant prep[pcas:avant];
+après prep[pcas:après];
+contre prep[pcas:contre];
+
+que	prel [fct:obj];
+qui	prel [fct:subj];
+';
+
+$pe='
+[ ]+⇒ 
+[ ]([\.,])⇒$1
+(^| )([tsjlmnd]|qu)e[ ]([aàeéèêëiïuüûoy])⇒$1$2\'$3
+(^| )([tslm])a[ ]([aà])⇒$1$2\'$3
+(^| )ce[ ]([aàeéèêëiïuüûoy])⇒$1cet $2
+(^|[.?!][ ])(.)⇒$1\u$2
+(<[pP]>|<[bB][rR]>)[ ]*(.)⇒$1\u$2
+';
+
+?>

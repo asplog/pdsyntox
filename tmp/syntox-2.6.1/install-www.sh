@@ -1,0 +1,1 @@
+(cd /Users/Lionel/syntox/syntox-2.6.1; make ; sudo make install && sudo cp -rf www/* /Library/WebServer/Documents/syntox/) && sudo cp -rf data/lefff/lefff.fsa data/lefff/lefff.tbl /Library/WebServer/Documents/syntox/data

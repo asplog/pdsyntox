@@ -1,0 +1,6 @@
+@grammar «
+#line 1
+#file "p2.grammar"
+Axiom → T dot T;
+T → a b c;
+»

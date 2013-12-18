@@ -1,0 +1,211 @@
+<?php
+/* ***********
+ * utf-8 ↓
+ ************ */
+
+$title='French sample 09';
+$subtitle='Passed Participle Agreement in French';
+
+$in=array(array('Relative, objet extrait','
+NP[PRED:étudiant,
+mod:<[PRED:inscrire,
+   tense:passe_compose,
+   subj:[PRED:secrétariat]]>]'),
+	  array('Passé composé transitif actif', '
+S[PRED:inscrire,
+   tense:passe_compose,
+   subj:[PRED:secrétariat],
+   obj:[PRED:étudiant]]'),
+	  array('Passé composé intransitif actif a)', '
+S[PRED:dormir,
+   tense:passe_compose,
+   subj:[PRED:étudiant]]'),
+	  array('Passé composé intransitif actif b)', '
+S[PRED:partir,
+   tense:passe_compose,
+   subj:[PRED:étudiant]]'),
+	  array('Passif', '
+S[PRED:inscrire,
+   tense:present,
+   subj:[PRED:étudiant]]'));
+
+$gr='
+S → NP VP
+{
+	[modP:NIL, subj:S, Rest];
+	↓1 := S;
+	SyntS := ⇓1;
+	↓2 := Rest ∪ [subj:SyntS, mood:indicative|subjonctive];
+};
+
+NP → det N
+{
+	↓1 := ↑;
+	↓2 := ↑;
+	test ⇓1 ∪ ⇓2;
+	⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:three];
+};
+
+N → nc
+{
+	[mod:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+N → N RP
+{
+	[mod:<Head::Tail>, Rest];
+	[number:Nh, gender:Gh] ⊂ ↑;
+	// Passage des traits communs entre la relative et le nom
+	↓1 := [Rest, mod:Tail];
+	[number:Ns, gender:Gs] ⊂ ⇓1;
+	↓2 := Head ∪ [number:Nh, gender:Gh] ∪ [number:Ns, gender:Gs];
+	⇑ := Rest ∪ ⇓1;
+};
+
+VP → V
+{
+	[mod:NIL, obj:NIL, obl:NIL, acomp:NIL, scomp:NIL, vs:NIL];
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+
+VP → VP NP
+{
+	[obj:OBJ, obl:NIL];
+	[obj:OBJ, X] ⊂ ↑;
+	[obj:OBJSynt] ⊂ ⇓1;
+	↓1 := X;
+	↓2 := OBJ ∪ OBJSynt;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP Empty
+{
+	[obj:OBJ, obl:NIL];
+	[obj:OBJ, X] ⊂ ↑;
+	[obj:OBJSynt] ⊂ ⇓1;
+	↓1 := X ∪ [objExtr:OBJ];
+	↓2 := OBJ ∪ OBJSynt;
+	⇑ := ⇓1 ∪ ↑;
+};
+
+Empty →
+{
+	[PRED:none];
+};
+
+// passive
+V → aux v
+{
+	[X, subj:S, neg:NIL];
+	[tense:T, mood:M] ⊂ ↑;
+	[number:N, gender:G] ⊂ S;
+	order $2 $1;
+	↓2 := X ∪ [aux:avoir, pastp:yes, number:N, gender:G];
+        ↓1 := [aux:être, diathese:passive, tense:T, mood:M, subj:S];
+	⇑ := ⇓2;
+};
+
+// active
+// manque verbes intransitifs
+V → aux v
+{
+	[X, subj:S, neg:NIL];
+	[tense:T, mood:M] ⊂ ↑;
+	// Si l\'objet est extrait, il s\'accorde
+	// en genre et en nombre avec le participe
+	[objExtr:OBJEXTR] ⊂ ↑;
+        ↓1 := [diathese:active, tense:T, mood:M, subj:S];
+	[aux:AUX] ⊂ ⇓1;
+	if (OBJEXTR) {
+		[objExtr:[number:N, gender:G]] ⊂ ↑;
+		↓2 := X ∪ [aux:AUX, pastp:yes, number:N, gender:G];
+	} 
+	else {
+	     if (AUX = avoir)
+	     	↓2 := X ∪ [aux:avoir, pastp:yes, number:sg, gender:ms];
+	     else {
+		[number:N, gender:G] ⊂ S; // sapplique pas !!!
+		↓2 := X ∪ [aux:être, pastp:yes, number:N, gender:G];
+	}
+	}
+	⇑ := ⇓2;
+};
+
+V → v
+{
+	[neg:NIL];
+	↓1 := ↑ ∪ [mood:indicative|subjonctive|imperative, pastp:no];
+	⇑ := ⇓1;
+};
+
+PP → prep NP
+{
+	[arg:A, B];
+	↓1 := B;
+	↓2 := A;
+	⇑ := ⇓1;
+};
+
+RP → prel S
+{
+	[number:N, gender:G, REST] ⊂ ↑;
+	↓1 := [];
+	[fct:FCT] ⊂ ⇓1;
+	↓2 := REST ∪ [FCT:[PRED:none, number:N, gender:G]];
+};
+';
+
+$lx='
+le	det [number:sg, gender:ms, def:yes];
+la	det [number:sg, gender:fm, def:yes];
+les	det [number:pl, def:yes];
+
+étudiant  nc [PRED:étudiant, number:sg, gender:ms];
+étudiants  nc [PRED:étudiant, number:pl, gender:ms];
+étudiante  nc [PRED:étudiant, number:sg, gender:fm];
+étudiantes  nc [PRED:étudiant, number:pl, gender:fm];
+
+secrétariat  nc [PRED:secrétariat, number:sg, gender:ms];
+secrétariats  nc [PRED:secrétariat, number:pl, gender:ms];
+
+est	aux [aux:être, diathese:passive, mood:indicative, tense:present, subj:[person:three, number:sg]]
+	|aux [aux:être, diathese:active, mood:indicative, tense:passe_compose, subj:[person:three, number:sg]];
+a	aux [aux:avoir, diathese:active, mood:indicative, tense:passe_compose, subj:[person:three, number:sg]];
+
+que	prel [fct:obj];
+
+inscrit		v [PRED:inscrire, aux:avoir, pastp:yes, gender:ms, number:sg];
+inscrits	v [PRED:inscrire, aux:avoir, pastp:yes, gender:ms, number:pl];
+inscrite	v [PRED:inscrire, aux:avoir, pastp:yes, gender:fm, number:sg];
+inscrites	v [PRED:inscrire, aux:avoir, pastp:yes, gender:fm, number:pl];
+
+dormi		v [PRED:dormir, aux:avoir, pastp:yes, gender:ms, number:sg];
+
+parti		v [PRED:partir, aux:être, pastp:yes, gender:ms, number:sg];
+partis	v [PRED:partir, aux:être, pastp:yes, gender:ms, number:pl];
+partie	v [PRED:partir, aux:être, pastp:yes, gender:fm, number:sg];
+parties	v [PRED:partir, aux:être, pastp:yes, gender:fm, number:pl];
+
+';
+
+$pe='
+(^| )([tsjlmcnd]|qu)e ([aàeiuoyéèê])⇒$1$2\\\'$3
+(^| )la ([aeiuoyéèêAEIUOYÉÈÊ])⇒$1l\\\'$2
+(^| )([mts])a ([aeiuoyéèê])⇒$1$2on $3
+(^| )de le($| )⇒$1du$2
+(^| )de les($| )⇒$1des$2
+[.][.][.]⇒&dots;
+ *([,.;]) *⇒$1
+([?!.,;:]) *(.)⇒$1 $2
+(^|[.?!] )(.)⇒$1\\\u$2
+( *[(])⇒ (
+([)] *)⇒) 
+([0-9])[.] ([0-9])⇒$1.$2
+[.] *[.]⇒.
+&dots;⇒...
+';
+
+?>

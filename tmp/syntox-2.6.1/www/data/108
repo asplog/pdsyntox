@@ -1,0 +1,337 @@
+<?php
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Sample 8';
+$subtitle='Light verbs, main verbs and idioms.';
+
+$in=array(array('proférer accusation', 'S[PRED:proferer(accusation), subj:[FORM:&quot;Luc&quot;]]'),
+          array('proférer parole', 'S[PRED:proferer(parole), subj:[FORM:&quot;Luc&quot;], objC:[def:no, mod:<[PRED:menaçant]>]]'),
+	  array('prendre peur', 'S[PRED:prendreN(peur), subj:[FORM:&quot;Luc&quot;]]'),
+	  array('prendre garde', 'S[PRED:prendreN(garde), subj:[FORM:&quot;Luc&quot;], obl:[PRED:à, arg:[FORM:&quot;Léon&quot;]]]'),
+	  array('prendre initiative', 'S[PRED:prendreDN(initiative), subj:[FORM:&quot;Luc&quot;], objC:[def:no, number:sg, mod:<[PRED:idiot]>]]'),
+	  array('prendre', 'S[PRED:prendre, subj:[FORM:&quot;Luc&quot;], obj:[PRED:voiture, number:sg, poss:yes]]'),
+	  array('prendre la poudre d&apos;escampette', '
+///////////////////////////////////////////////
+// Prendre la poudre d&apos;escampette: to do a bunk - do a runner - take to one&apos;s heels;
+///////////////////////////////////////////////
+S[PRED:prendre_la_poudre_d_escampette, subj:[FORM:&quot;Luc&quot;]]'),
+ 	  array('prendre le taureau par les cornes', '
+ ///////////////////////////////////////////////
+ // Prendre le taureau pas les cornes: take the bull by the horns;
+ ///////////////////////////////////////////////
+ S[PRED:prendre_le_taureau_par_les_cornes, subj:[FORM:&quot;Luc&quot;]]')
+          );
+
+$gr='
+S → NP VP
+{
+    [modP:NIL, subj:X];
+    ↓1 := X;
+    Y := ⇓1;
+    ↓2 := ↑ ∪ [subj:Y];
+    ⇑ := ↑ ∪ ⇓2;
+};
+
+NP → (det) N
+{
+    order $2 $1 ;
+    ↓2 := ↑;
+    if ($1) {
+       ↓1 := ↑ ∪ ⇓2;
+       ⇑ := ↑ ∪ ⇓1 ∪ ⇓2 ∪ [person:3, det:yes];
+    } else {
+       ⇑ := ↑ ∪ ⇓2 ∪ [person:3, det:no];
+    }
+};
+
+N → nc
+{
+    [mod:NIL];
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+NP → constantNoun
+{
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+PP → constantNoun
+{
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+N → A N
+{
+        [mod:<Elt::Rest>, X];
+        [number:N, gender:G] ⊂ ↑;
+        ↓1 := Elt ∪ [number:N, gender:G, pre:yes, post:no];
+        [number:N1, gender:G1] ⊂ ⇓1;
+        test [pre:yes, post:no] ∪ ⇓1;
+        ↓2 := [X, mod:Rest] ∪ [number:N1, gender:G1];
+        ⇑ := X ∪ ⇓2 ∪ [number:N1, gender:G1];
+};
+
+N → N A
+{
+        [mod:<Head::Tail>, X];
+        order $2 $1;
+        [number:N, gender:G] ⊂ ↑;
+        ↓2 := Head ∪ [number:N, gender:G, pre:no, post:yes];
+        [number:N2, gender:G2] ⊂ ⇓2;
+        test [pre:no, post:yes] ∪ ⇓1;
+        ↓1 := [X, mod:Tail] ∪ [number:N2, gender:G2];
+        ⇑ := X ∪ ⇓1 ∪ [number:N2, gender:G2];
+};
+
+NP → pn
+{
+    ↓1 := ↑;
+    ⇑ := ⇓1;
+};
+
+A → adj
+{
+        [mod:NIL];
+        ↓1 := ↑;
+        ⇑ := ⇓1;
+};
+
+A → advA A
+{
+        [mod:<Head::Tail>, X];
+        ↓1 := Head;
+	↓2 := [X, mod:Tail];
+        ⇑ := X ∪ ⇓2;
+};
+
+VP → V (NP) (PP)
+{
+    [obl:NIL, obj:NIL];
+    [objC:Obj, oblC:Obl, X] ⊂ ↑;
+    ↓1 := X;
+    [objC:ObjSynt, oblC:OblSynt] ⊂ ⇓1;
+    if ($2) {
+        ↓2 := Obj ∪ ObjSynt;
+    } else {
+	test ObjSynt=NIL;
+    }
+    if ($3) {
+        ↓3 := Obl ∪ OblSynt;
+    } else {
+	test OblSynt=NIL;
+    }
+    ⇑ := ⇓1;
+};
+
+VP → VP NP
+{
+ 	[obj:Obj, X];
+ 	↓1 := X;
+ 	[obj:ObjSynt] ⊂ ⇓1;
+ 	↓2 := Obj ∪ ObjSynt;
+ 	⇑ := ⇓1 ∪ ↑;
+};
+
+VP → VP PP
+{
+ 	[obl:Obl, X];
+ 	↓1 := X;
+ 	[obl:OblSynt] ⊂ ⇓1;
+ 	↓2 := Obl ∪ OblSynt;
+ 	⇑ := ⇓1 ∪ ↑;
+};
+
+V → v
+ {
+   ↓1 := ↑;
+   test ⇓1 ∪ [pastp:no];
+   ⇑ := ⇓1;
+ };
+
+PP → prep NP
+{
+	[arg:A, B];
+	↓1 := B;
+	↓2 := A;
+	⇑ := ⇓1;
+};
+
+';
+
+$lx='
+/* ***********
+ * Lexicon 
+ ************ */
+IDENTITY constantNoun;
+
+// Proférer qqchse (menace, injure, parole, etc.)
+profère v[
+        PRED:proferer(X),
+        vForm:tense,
+        mode:indicatif,
+        tense:présent,
+        subj:[person:3, number:sg],
+        objC:[PRED:X, det:yes]];
+
+///////////////////////////////////////////////
+// PRENDRE
+///////////////////////////////////////////////
+// Prendre (froid, peur, garde, etc.)
+prend   v[
+        PRED:prendreN(X),
+        vForm:tense,
+        mode:indicatif,
+        tense:présent,
+        subj:[person:3, number:sg],
+        objC:[PRED:X, det:no, number:sg]]
+
+// Prendre (une initiative, le train, etc.)
+|	v[
+        PRED:prendreDN(X),
+        vForm:tense,
+        mode:indicatif,
+        tense:présent,
+        subj:[person:3, number:sg],
+        objC:[PRED:X, det:yes]]
+
+// Prendre qqchse
+|       v[PRED:prendre,
+        vForm:tense,
+        mode:indicatif,
+        tense:présent,
+        subj:[person:3, number:sg],
+        obj:[det:yes]]
+
+// Prendre la poudre d&apos;escampette
+|       v[PRED:prendre_la_poudre_d_escampette,
+        vForm:tense,
+        mode:indicatif,
+        tense:présent,
+        subj:[person:3, number:sg],
+        objC:[FORM:&quot;la poudre d&apos;escampette&quot;]]
+
+// Prendre le taureau par les cornes
+|       v[PRED:prendre_le_taureau_par_les_cornes,
+        vForm:tense,
+        mode:indicatif,
+        tense:présent,
+        subj:[person:3, number:sg],
+        objC:[FORM:&quot;le taureau&quot;],
+        oblC:[FORM:&quot;par les cornes&quot;]]
+;
+///////////////////////////////////////////////
+//
+///////////////////////////////////////////////
+
+le	det [number:sg, gender:ms, def:yes, dem:no, poss:no];
+la	det [number:sg, gender:fm, def:yes, dem:no, poss:no];
+les	det [number:pl, def:yes, dem:no, poss:no];
+
+un	det [number:sg, gender:ms, def:no, dem:no, poss:no];
+une	det [number:sg, gender:fm, def:no, dem:no, poss:no];
+des	det [number:pl, def:no, dem:no, poss:no];
+
+mon	det [number:sg, gender:ms, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:sg];
+ma	det [number:sg, gender:fm, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:sg];
+mes	det [number:pl, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:sg];
+ton	det [number:sg, gender:ms, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:sg];
+ta	det [number:sg, gender:fm, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:sg];
+tes	det [number:pl, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:sg];
+son	det [number:sg, gender:ms, def:yes, dem:no, poss:yes, persPoss:3, numberPoss:sg];
+sa	det [number:sg, gender:fm, def:yes, dem:no, poss:yes, persPoss:3, numberPoss:sg];
+ses	det [number:pl, def:yes, dem:no, poss:yes, persPoss:3, numberPoss:sg];
+
+notre	det [number:sg, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:pl];
+nos	det [number:pl, def:yes, dem:no, poss:yes, persPoss:one, numberPoss:pl];
+votre	det [number:sg, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:pl];
+vos	det [number:pl, def:yes, dem:no, poss:yes, persPoss:two, numberPoss:pl];
+leur	det [number:sg, def:yes, dem:no, poss:yes, persPoss:3, numberPoss:pl];
+leurs	det [number:pl, def:yes, dem:no, poss:yes, persPoss:3, numberPoss:pl];
+
+ce	det [number:sg, gender:ms, def:yes, dem:yes, poss:no];
+ces	det [number:pl, def:yes, dem:yes, poss:no];
+cette	det [number:sg, gender:fm, def:yes, dem:yes, poss:no];
+
+étudiant  nc [PRED:étudiant, number:sg, gender:ms];
+étudiants  nc [PRED:étudiant, number:pl, gender:ms];
+étudiante  nc [PRED:étudiant, number:sg, gender:fm];
+étudiantes  nc [PRED:étudiant, number:pl, gender:fm];
+
+accusation  nc [PRED:accusation, number:sg, gender:fm];
+accusations  nc [PRED:accusation, number:pl, gender:fm];
+
+injure  nc [PRED:injure, number:sg, gender:fm];
+injures  nc [PRED:injure, number:pl, gender:fm];
+
+parole  nc [PRED:parole, number:sg, gender:fm];
+paroles  nc [PRED:parole, number:pl, gender:fm];
+
+menace  nc [PRED:menace, number:sg, gender:fm];
+menaces  nc [PRED:menace, number:pl, gender:fm];
+
+menaçant  adj [PRED:menaçant, number:sg, gender:ms, post:yes];
+menaçante  adj [PRED:menaçant, number:sg, gender:fm, post:yes];
+menaçants  adj [PRED:menaçant, number:pl, gender:ms, post:yes];
+menaçantes  adj [PRED:menaçant, number:pl, gender:fm, post:yes];
+
+idiot  adj [PRED:idiot, number:sg, gender:ms, post:yes];
+idiote  adj [PRED:idiot, number:sg, gender:fm, post:yes];
+idiots  adj [PRED:idiot, number:pl, gender:ms, post:yes];
+idiotes  adj [PRED:idiot, number:pl, gender:fm, post:yes];
+
+président	nc [PRED:président, number:sg, gender:ms];
+présidents	nc [PRED:président, number:pl, gender:ms];
+
+garde  nc [PRED:garde, number:sg, gender:fm];
+gardes  nc [PRED:garde, number:pl, gender:fm];
+
+peur  nc [PRED:peur, number:sg, gender:fm];
+peurs  nc [PRED:peur, number:pl, gender:fm];
+
+voiture  nc [PRED:voiture, number:sg, gender:fm];
+voitures  nc [PRED:voiture, number:pl, gender:fm];
+
+initiative  nc [PRED:initiative, number:sg, gender:fm];
+initiatives  nc [PRED:initiative, number:pl, gender:fm];
+
+je	cln [PRED:pro, number:sg, person:one];
+tu	cln [PRED:pro, number:sg, person:two];
+il	cln [PRED:pro, number:sg, person:3, gender:ms];
+elle	cln [PRED:pro, number:sg, person:3, gender:fm];
+nous	cln [PRED:pro, number:pl, person:one];
+vous	cln [PRED:pro, number:pl, person:two];
+ils	cln [PRED:pro, number:pl, person:3, gender:ms];
+elles	cln [PRED:pro, number:pl, person:3, gender:fm];
+
+très    advA [PRED:très];
+
+en	prep[PRED:en];
+de	prep [PRED:de];
+à	prep [PRED:à];
+dans	prep [PRED:dans];
+avec	prep [PRED:avec];
+
+';
+
+$pe='
+(^| )([tsjlmcnd]|qu)e ([aàeiuoyéèê])⇒$1$2\\\'$3
+(^| )la ([aeiuoyéèêAEIUOYÉÈÊ])⇒$1l\\\'$2
+(^| )([mts])a ([aeiuoyéèê])⇒$1$2on $3
+(^| )de le($| )⇒$1du$2
+(^| )de les($| )⇒$1des$2
+[.][.][.]⇒&dots;
+ *([,.;]) *⇒$1
+([?!.,;:]) *(.)⇒$1 $2
+(^|[.?!] )(.)⇒$1\\\u$2
+( *[(])⇒ (
+([)] *)⇒) 
+([0-9])[.] ([0-9])⇒$1.$2
+[.] *[.]⇒.
+&dots;⇒...
+';
+
+?>

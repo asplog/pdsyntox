@@ -1,0 +1,83 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Test 6';
+$subtitle='Test conditionals with terms';
+
+$in='
+S
+';
+
+$gr='
+S → X {
+	↓1 := ↑;
+};
+
+X → (A) (B1|B2) C1|C2 {
+	[lex:L1] ⊂ ⇓1;
+	[lex:L2] ⊂ ⇓2;
+	[lex:L3] ⊂ ⇓3;
+	if ($1) 
+		X1 := 1;
+	 else 
+		X1 := 0;
+	
+	if ($2) 
+		X2 := 1;
+	 else 
+		X2 := 0;
+	
+	if ($2:1) 
+		X21 := 1;
+	 else 
+		X21 := 0;
+	
+	if ($2:2) 
+		X22 := 1;
+	 else 
+		X22 := 0;
+	
+	if ($3:1) 
+		X31 := 1;
+	 else 
+		X31 := 0;
+	
+	if ($3:2) 
+		X32 := 1;
+	 else 
+		X32 := 0;
+	
+	if (finished){
+		trace "<ul>";
+		trace "<li>L1: "; trace L1; trace "</li>";
+		trace "<li>L2: "; trace L2; trace "</li>";
+		trace "<li>L3: "; trace L3; trace "</li>";
+		trace "<li>X1: "; trace X1; trace "</li>";
+		trace "<li>X2: "; trace X2; trace "</li>";
+		trace "<li>X21: "; trace X21; trace "</li>";
+		trace "<li>X22: "; trace X22; trace "</li>";
+		trace "<li>X31: "; trace X31; trace "</li>";
+		trace "<li>X32: "; trace X32; trace "</li>";
+		trace "<li>X1: "; trace X1; trace "</li>";
+		trace "</ul>";
+		}
+};
+
+A → a {↓1 := ↑; ⇑ := ⇓1;};
+B1 → b1 {↓1 := ↑; ⇑ := ⇓1;};
+B2 → b2 {↓1 := ↑; ⇑ := ⇓1;};
+C1 → c1 {↓1 := ↑; ⇑ := ⇓1;};
+C2 → c2 {↓1 := ↑; ⇑ := ⇓1;};
+';
+
+$lx='
+a	a[lex:a];
+b1	b1[lex:b1];
+b2	b2[lex:b2];
+c1	c1[lex:c1];
+c2	c2[lex:c2];
+';
+
+?>

@@ -1,0 +1,73 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Test 4';
+$subtitle='Filter';
+
+
+$in='
+S[PRED:predicate, att1:value1, att2:value2, att3:<[att4:value4, att5:value5], [att6:value6], [att7:value7]>]
+';
+
+$gr='
+S → M A {↓1 := ↑;↓2 := ↑;};
+M → {trace "<H4>[PRED:predicate, att1:value1, att2:value2, att3:<[att4:value4, att5:value5], [att6:value6], [att7:value7]>]</H4>";};
+
+A → x {
+	[];
+	trace "<h5>Filter []:</h5>";
+};
+
+A → x {
+	[X];
+	trace "<h5>Filter [X]:</h5><ul><li>X:"; trace X;trace "</li></ul>";
+};
+
+A → x {
+	[X, Y];
+	trace "<h5>Filter [X, Y]:</h5><ul><li>X:"; trace X;trace "</li><li>Y:"; trace Y; trace "</li></ul>";
+};
+
+A → x {
+	[att1:X];
+	trace "<h5>Filter [att1:X]:</h5><ul><li>X:"; trace X;trace "</li></ul>";
+};
+
+A → x {
+// Fails
+	[att1:NIL];
+};
+
+A → x {
+	[att4:NIL];
+	trace "<h5>Filter [att4:NIL]:</h5>";
+};
+
+A → x {
+	[att3:L, M]; 
+	trace "<h5>Filter [att3:L, M]:</h5><ul><li>L:"; trace L; trace "</li><li>M:"; trace M; trace "</li></ul>";
+};
+
+A → x {
+	[att3:<H::T>, M];
+	trace "<h5>Filter [att3:&amp;lt;H::T&amp;gt;, M]:</h5><ul><li>H:"; trace H; trace "</li><li>T:"; trace T; trace "</li><li>M:"; trace M; trace "</li></ul>";
+};
+
+A → x {
+// Fails
+	[att3:<E1, E2, E3>, M];
+};
+
+A → x {
+	[PRED:P, X];
+	trace "<h5>Filter [PRED:P, X]:</h5><ul><li>P:"; trace P; trace "</li><li>X:"; trace X; trace "</li></ul>";
+};
+';
+
+$lx='
+""	x;
+';
+
+?>

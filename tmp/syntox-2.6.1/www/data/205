@@ -1,0 +1,41 @@
+<?php
+
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Test 5';
+$subtitle='Inherited and synthesized attributes';
+
+
+$in='
+S [attr1:givenValue, attr2:shared]
+';
+
+$gr='
+S → X {
+	↓1 := ↑;
+};
+
+X → A {
+	[attr1:H] ⊂ ↑;
+	↓1 := ↑;
+	[attr3:S] ⊂ ⇓1;
+if (finished){
+	trace "<ul><li>Inherited attribute:"; trace H; 
+	trace "</li><li>Synthesize attribute:"; trace S; trace "</li></ul>";
+}
+};
+
+A → a
+{
+	↓1 := ↑;
+	⇑ := ⇓1;
+};
+';
+
+$lx='
+""	a [attr2:shared, attr3:lexiconValue1];
+""	a [attr2:not_shared, attr3:lexiconValue2];
+';
+
+?>

@@ -1,0 +1,192 @@
+<?php
+/* ***********
+ * utf-8 ↓
+ ************ */
+$title='Natural Language Generator';
+$subtitle='-VERSION ALPHA-';
+
+$_radiosTenseAspect=array('tense' => array('name' => 'Tense',
+					   'values' => array('present' => 'tense:present',
+							     'past' => 'tense:past',
+							     'future' => 'tense:future'),
+					   'checked' => 0,
+					   'onchange' => '\
+if (this.value==\'tense:present\'){					\
+    document.getElementById(\'#aspect#\').style.display=\'none\';	\
+ } else {								\
+     document.getElementById(\'#aspect#\').style.display=\'block\';	\
+     if (this.value==\'tense:past\'){					\
+	 document.getElementById(\'#aspect#\').getElementsByTagName(\'DIV\')[3].style.display=\'block\'; \
+	 document.getElementById(\'#aspect#\').getElementsByTagName(\'DIV\')[0].style.display=\'none\'; \
+	 if (document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[0].checked){	\
+	     document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[0].checked=false; \
+	     document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[3].checked=true; \
+             document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[3].onchange(); \
+	 }								\
+     }									\
+     else if (this.value==\'tense:future\'){				\
+	 document.getElementById(\'#aspect#\').getElementsByTagName(\'DIV\')[0].style.display=\'block\'; \
+	 document.getElementById(\'#aspect#\').getElementsByTagName(\'DIV\')[3].style.display=\'none\'; \
+	 if (document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[3].checked){	\
+	     document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[3].checked=false; \
+	     document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[0].checked=true; \
+             document.getElementById(\'#aspect#\').getElementsByTagName(\'input\')[0].onchange(); \
+	 }								\
+	 document.getElementById(\'#aspect#\').onchange();		\
+     }									\
+ }									\
+'),
+			  
+			  'aspect' => array('name' => 'Aspect',
+					    'values' => array('near future' => 'aspect:nearfuture',
+							      'accomplished' => 'aspect:accomplished',
+							      'unaccomplished' => 'aspect:unaccomplished',
+							      'accomplished in the past' => 'aspect:pastaccomplished'),
+					    'display' => 'none',
+					    'checked' => 1,
+					    'disabled' => array(false, false, false, false),
+					    'newTD' => true));
+
+$_checkboxesNegative=array('negative' => array('name' => 'Negative',
+					   'value' => 'neg:yes',
+					   'display' => 'block',
+					   'checked' => false,
+					   'disabled' => false,
+					   'onchange' => ''));
+
+$_radiosDeterminerNumber=array('number' => array('values' => array('singular' => 'number:sg',
+								   'plural' => 'number:pl'),
+						 'checked' => 0,
+						 'name' => 'Number'
+						 ),
+			       'determiner' => array('values' => array('defined' => 'def:yes, poss:no, dem:no',
+								       'undefined' => 'def:no, poss:no, dem:no',
+								       'possessive' => 'def:no, poss:yes, dem:no',
+								       'demonstrative' => 'def:no, poss:no, dem:yes'),
+						     'checked' => 1,
+						     'onchange' => 'if (this.value==\'def:no, poss:yes, dem:no\') { document.getElementById(\'#possessor#\').style.display=\'block\'; } else { document.getElementById(\'#possessor#\').style.display=\'none\'; }',
+						     'name' => 'Determiner',
+						     'newTD' => true),
+			       'possessor' => array('values' => array(
+								      'me' => 'numberposs:sg, personposs:one',
+								      'me (represent of a compagny)' => 'numberposs:pl, personposs:one',
+								      'you (in polite society)' => 'numberposs:pl, personposs:two',
+								      'him/her' => 'numberposs:sg, personposs:three',
+								      'we' => 'numberposs:pl, personposs:one',
+								      'you (several persons)' => 'numberposs:pl, personposs:two',
+								      'them' => 'numberposs:pl, personposs:three'),
+						    'display' => 'none',
+						    'checked' => 0,
+						    'name' => 'Possessor',
+						    'newTD' => true));
+
+$_buttonsModifier=array('noun_modifier' => array('name' => 'Add a Modifier',
+						 'display' => 'block',
+						 'disabled' => false,
+						 'value' => '-noun-modifiers-'));
+
+		      
+$_radiosDeterminerNumberGender=array('number' => array('values' => array('singular' => 'number:sg',
+									 'plural' => 'number:pl'),
+						       'checked' => 0,
+						       'name' => 'Number'),
+				     'gender' => array('values' => array('M' => 'gender:ms',
+									 'F' => 'gender:fm'),
+						       'checked' => 0,
+						       'name' => 'Gender'),
+				     'determiner' => array('values' => array('defined' => 'def:yes, poss:no, dem:no',
+									     'undefined' => 'def:no, poss:no, dem:no',
+									     'possessive' => 'def:no, poss:yes, dem:no',
+									     'demonstrative' => 'def:no, poss:no, dem:yes'),
+							   'checked' => 1,
+							   'onchange' => 'if (this.value==\'def:no, poss:yes, dem:no\') { document.getElementById(\'#possessor#\').style.display=\'block\'; } else { document.getElementById(\'#possessor#\').style.display=\'none\'; }',
+							   'name' => 'Determiner'),
+				     'possessor' => array('values' => array(
+									    'me' => 'numberposs:sg, personposs:one',
+									    'me (represent of a compagny)' => 'numberposs:pl, personposs:one',
+									    'you (in polite society)' => 'numberposs:pl, personposs:two',
+									    'him/her' => 'numberposs:sg, personposs:three',
+									    'we' => 'numberposs:pl, personposs:one',
+									    'you (several persons)' => 'numberposs:pl, personposs:two',
+									    'them' => 'numberposs:pl, personposs:three'),
+							  'display' => 'none',
+							  'checked' => 0,
+							  'name' => 'Possessor',
+							  'newTD' => true));
+
+$_fsDeterminerNumberModifier = '#number#, #determiner#, #possessor#, mod:(#noun_modifier#)';
+$_fsDeterminerNumberGenderModifier = '#number#, #gender#, #determiner#, #possessor#, mod:(#noun_modifier#)';
+$_fsTenseAspectNegative='#tense#, #aspect#, #negative#';
+
+$humans = array('me', 'me (represent of a compagny)', 'you', 'you (in polite society)', 'him', 'her', 'we', 'you (several persons)', 'them (masculine)', 'them (feminine)', 'someone');
+$companies = array();
+$animals = array();
+$items = array('-transportation-items-', '-food-items-');
+$time = array();
+$lap = array();
+$animates = array_merge($humans, $animals);
+$entities = array_merge($humans, $animals, $items);
+$personalities = array_merge($humans, $companies);
+
+$in= array('-REQUIRED-' => array('fs' => '-REQUIRED-'),
+	   '-NOT-REQUIRED-' => array('fs' => ''));
+
+include_once('transaction.php');
+include_once('complex_events.php');
+
+include_once('humans.php');
+include_once('food.php');
+include_once('transportation.php');
+
+include_once('noun_modifiers.php');
+
+include_once('french_grammar.php');
+include_once('french_lexicon.php');
+
+$in= array_merge($in,
+		 array('-REQUIRED-' => array('fs' => '-REQUIRED-'),
+		       '-NOT-REQUIRED-' => array('fs' => ''),
+		       '-root-' => array(//'input' => 'hidden',
+					 'input' => 'input',
+					 //'input' => 'source',
+					 //'input' => 'local source',
+					 
+					 'menus' => array('content' => array('display' => 'block',
+									     'values' => array_merge(array('-complex-events-'), $predicates),
+									     'name' => 'Content of the message',
+									     'required' => true,
+									     'checked' => 0)),
+					 
+					 'fs' => '#content#'),
+		       '-transaction-' => array('input' => 'hidden',
+						'fs' => '[PRED:#transaction#, subj:[FORM:"#civ# #name# #surname#", #gender#, number:sg, person:three], obj:[PRED:#object#, #number#, def:no, poss:no, dem:no], diathesis:active, #tense#]',
+						'evals' => array('transaction' => '$Transaction',
+								 'surname' => '$Surname',
+								 'name' => '$Name',
+								 'gender' => '($Gender == "M") ? "gender:ms" : "gender:fm"',
+								 'number' => '($Quant > 1) ? "number:pl" : "number:sg"',
+								 'civ' => '($Gender == "M") ? "M." : "Mme."',
+								 'object' => '$Object',
+								 'tense' => '($Date > $Today) ? "tense:future, aspect:nearfuture" : (($Date < $Today) ? "tense:past, aspect:accomplished" : "tense:present")')),
+		       
+		       '-win-lose-' => array('input' => 'hidden',
+					     'fs' => '[PRED:#transaction#, subj:[FORM:"#civ# #name# #surname#", #gender#, number:sg, person:three], obj:[PRED:point, num:[FORM:"#num#"], number:pl, def:no, poss:no, dem:no], diathesis:active, tense:past, aspect:accomplished]',
+					     'evals' => array('transaction' => '($Q1 > $Q2) ? "to-lose" : "to-win"',
+							      'num' => 'abs($Q1-$Q2)',
+							      'surname' => '$Surname',
+							      'name' => '$Name',
+							      'gender' => '($Gender == "M") ? "gender:ms" : "gender:fm"',
+							      )),
+		       
+		       ));
+
+$pe='
+[ ]+⇒ 
+[ ]([\.,])⇒$1
+(^| )([tsjlmnd]|qu)e[ ]([aàeéèêëiïuüûoy])⇒$1$2\\\'$3
+(^| )([tslm])a[ ]([aà])⇒$1$2\\\'$3
+(^| )ce[ ]([aàeéèêëiïuüûoy])⇒$1cet $2
+(^|(\\\.|\\\?|\\\!)\\\s*)\\\s*(.)⇒$1\\\u$3
+';
+
+?>

@@ -1,0 +1,8 @@
+@lexicon «
+#line 1
+#file "p2.lexicon"
+a a[];
+b b[];
+c c[];
+"." dot[];
+»

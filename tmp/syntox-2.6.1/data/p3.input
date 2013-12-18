@@ -1,0 +1,50 @@
+@input  «
+#file "input"
+#line 1
+
+Axiom [PRED:paragraph,
+	arg1:	[PRED:conséquence,
+		arg1:	[PRED:succ,
+			arg1:	[PRED:commander, 
+				diathese:active,
+				tense:passé-composé, 
+				subj:[PRED:pro, person:one, number:sg], 
+				à-obj:[PRED:pro, person:two, number:pl], 
+				obj:[FORM:"un appareil photo numérique Nikon Coolpix S6400 Noir"],
+				modS:<[FORM:"lundi 18 mars 2013", time:date]>],
+			arg2:	[PRED:recevoir, 
+				diathese:active,
+				neg:yes,
+				tense:passé-composé, 
+				obj:[PRED:livraison, def:yes, poss:no, dem:no, number:sg], 
+				subj:[PRED:pro, person:one, number:sg], 
+				modV:<[PRED:pas-encore]>,
+				modS:<[FORM:"aujourd'hui", time:date]>]
+			],
+	
+		arg2:	[PRED:demander, 
+			diathese:active,
+			subj:[PRED:pro, person:one, number:sg], 
+			scomp:	[PRED:rembourser,
+				diathese:active,
+				form:aff,
+				tense:present,
+				subj:[PRED:pro, person:two, number:pl], 
+				à-obj:[PRED:pro, person:one, number:sg],
+				modS:<[FORM:"dans les plus brefs délais", time:time]>]]
+		],
+	
+	arg2:	[PRED:si-cependant-alors,
+		arg1:	[PRED:envoyer,
+			tense:passé-composé,
+			diathese:active,
+			form:aff,
+			subj:[PRED:pro, number:pl, person:two],
+			obj:[PRED:article, def:yes, number:sg]],
+		arg2:	[PRED:merci-de,
+			vcomp:	[PRED:tenir(compte),
+				neg:yes,
+				tense:present,
+				de-obj:[PRED:courrier, dem:yes, number:sg]]]
+		]
+	]»
