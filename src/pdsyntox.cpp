@@ -19,7 +19,6 @@ t_symbol*s_clear=0;
 t_symbol*s_input=0;
 t_symbol*s_remove=0;
 
-pthread_mutex_t engine_locker = PTHREAD_MUTEX_INITIALIZER;
 typedef struct
 {
 	pdsyntox_t*	self;
@@ -45,6 +44,7 @@ void*invoke(void*args)
 	pthread_cond_broadcast(((args_t*)args)->broad);
 	{
 		static pthread_mutex_t engine_locker=PTHREAD_MUTEX_INITIALIZER;
+		static pthread_mutex_t output_locker=PTHREAD_MUTEX_INITIALIZER;
 		switch(pthread_mutex_trylock(&engine_locker))
 		{
 			case 0:
@@ -58,10 +58,12 @@ void*invoke(void*args)
 					{
 						std::list<std::string>*gens=synthesizer.parseInput(input);
 						std::list<std::string>::iterator cur=gens->begin();
+						pthread_mutex_lock(&output_locker);
 						sys_lock();
 						while(cur!=gens->end())
 							outlet_symbol(self->out[0],gensym((cur++)->c_str()));
 						sys_unlock();
+						pthread_mutex_unlock(&output_locker);
 					}
 					catch(std::string msg)
 					{
@@ -72,9 +74,11 @@ void*invoke(void*args)
 				break;
 			case EBUSY:
 				{
+					pthread_mutex_lock(&output_locker);
 					sys_lock();
-					dump(self,(char*)"Syntox engine is currently used");
+					dump(self,"Syntox engine is currently used");
 					sys_unlock();
+					pthread_mutex_unlock(&output_locker);
 				}
 				break;
 		}

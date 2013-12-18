@@ -40,7 +40,7 @@
 #X msg 899 41 lexicon load etc/test.lexicon;
 #X text 46 52 Bang when something error occurs;
 #X text 298 135 Parse command;
-#X msg 604 59 grammaradd X->Y;
+#X msg 604 59 grammar add X->Y;
 #X msg 609 78 grammar remove X->Y;
 #X text 717 59 Add directly[Buggy];
 #X connect 0 0 2 0;
